@@ -1,0 +1,59 @@
+.add-category-container {
+  position: relative;
+}
+
+.add-category-button {
+  font-size: 20px;
+  padding: 10px 20px;
+  background-color: #63cbff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-category-form {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.add-category-form h4 {
+  background-color: rgb(154, 25, 150);
+  color: white;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.add-category-form input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button-container button {
+  padding: 8px 16px;
+  margin: 7.5px;
+  background-color: #b1b45c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button-container button:hover {
+  background-color: #63b9ff;
+}

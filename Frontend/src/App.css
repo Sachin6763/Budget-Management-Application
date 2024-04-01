@@ -1,0 +1,20 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #b54d4d;
+  box-sizing: border-box;
+}
+
+.main-content {
+  /* border: 2px solid red; */
+  width: 100%;
+  justify-content: center;
+  position: relative;
+  /* opacity: 1; */
+  /* background-color: none; */
+  /* border-radius: 5px; */
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+
+/* Add more custom styles as needed */

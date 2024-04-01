@@ -1,0 +1,341 @@
+const express = require("express");
+const mysql = require("mysql2");
+const path = require("path");
+const cors = require("cors"); // Import CORS middleware
+
+// const bodyParser = require("body-parser");
+// app.use(bodyParser.json());
+
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "Sachin@6763",
+  database: "dms",
+});
+
+connection.connect((err) => {
+  if (err) {
+    console.error("Error connecting to database: " + err.stack);
+    return;
+  }
+  console.log("Connected to database as id " + connection.threadId);
+});
+
+const app = express();
+app.use(cors()); // Enable CORS for all routes
+app.use(express.json()); // Parse JSON request bodies
+
+// Serve static files from the root public folder of your React app
+app.use(express.static(path.join(__dirname, "../Frontend/public")));
+
+app.post("/api/signup", (req, res) => {
+  const { UserID, Password, Email } = req.body;
+  console.log(UserID, Password, Email);
+  // Check if the email is already registered
+  const emailCheckQuery = `SELECT * FROM user WHERE Email = ?`;
+  connection.query(emailCheckQuery, [Email], (emailError, emailResults) => {
+    if (emailError) {
+      console.error("Error checking email: " + emailError.stack);
+      res.status(500).json({ error: "Error checking email" });
+    } else if (emailResults.length > 0) {
+      // Email already exists, send an error response
+      res.status(400).json({ error: "Email is already taken" });
+    } else {
+      // Email is unique, check if the UserID is unique
+      const userIDCheckQuery = "SELECT * FROM user WHERE Username = ?";
+      connection.query(
+        userIDCheckQuery,
+        [UserID],
+        (userIDError, userIDResults) => {
+          if (userIDError) {
+            console.error("Error checking UserID: " + userIDError.stack);
+            res.status(500).json({ error: "Error checking UserID" });
+          } else if (userIDResults.length > 0) {
+            // UserID already exists, send an error response
+            res.status(400).json({ error: "Username is already taken" });
+          } else {
+            // UserID is also unique, proceed with registration
+            const insertQuery =
+              "INSERT INTO user (Username, Password, Email) VALUES (?, ?, ?)";
+            connection.query(
+              insertQuery,
+              [UserID, Password, Email],
+              (insertError, insertResults) => {
+                if (insertError) {
+                  console.error("Error executing query: " + insertError.stack);
+                  res.status(500).json({ error: "Error registering user" });
+                } else {
+                  res.json({ message: "User registered successfully" });
+                }
+              }
+            );
+          }
+        }
+      );
+    }
+  });
+});
+
+app.post("/api/login", (req, res) => {
+  const { userID, password } = req.body;
+  console.log(userID, password); // Ensure you're receiving the correct values
+
+  const query = `SELECT * FROM user WHERE Username = ? AND password = ?`;
+  connection.query(query, [userID, password], (error, results) => {
+    if (error) {
+      console.error("Error executing query: " + error.stack);
+      res.status(500).json({ error: "Error logging in" });
+    } else {
+      if (results.length > 0) {
+        // User found, send a success response
+        res.json({ message: "Login successful" });
+      } else {
+        // User not found, send an error response
+        res.status(401).json({ error: "Invalid username or password" });
+      }
+    }
+  });
+});
+
+const getUserIDByUsername = (username) => {
+  return new Promise((resolve, reject) => {
+    const getUserIDQuery = `SELECT UserID FROM User WHERE Username = ?`;
+    connection.query(getUserIDQuery, [username], (error, results) => {
+      if (error) {
+        console.error("Error getting UserID: " + error.stack);
+        reject("Error getting UserID");
+      } else {
+        // console.log("here2", results);
+        if (results.length > 0) {
+          // User found, send the UserID in response
+          const UserID = results[0].UserID;
+          // console.log(UserID);
+          resolve(UserID);
+        } else {
+          // User not found, send an error response
+          reject("User not found");
+        }
+      }
+    });
+  });
+};
+
+// Handle adding an expense
+app.post("/api/addExpense", (req, res) => {
+  const { username, expensename, amount, date, category } = req.body;
+
+  // Get UserID by username
+  getUserIDByUsername(username)
+    .then((UserID) => {
+      // Insert expense into database
+      const query = `INSERT INTO Expense (UserID, ExpenseName, Amount, ExpenseDate, CategoryID) VALUES (?, ?, ?, ?, ?)`;
+      connection.query(
+        query,
+        [UserID, expensename, amount, date, category],
+        (error, results) => {
+          if (error) {
+            console.error("Error adding expense:", error);
+            res.status(500).json({ error: "Error adding expense" });
+          } else {
+            res.json({ message: "Expense added successfully" });
+          }
+        }
+      );
+    })
+    .catch((error) => {
+      console.error("Error getting UserID:", error);
+      res.status(500).json({ error: "Error getting UserID" });
+    });
+});
+
+app.post("/api/addIncome", (req, res) => {
+  const { Username, name, amount, date, category } = req.body;
+  console.log(req.body);
+  // Get UserID by username
+  getUserIDByUsername(Username)
+    .then((UserID) => {
+      console.log(UserID);
+      // Insert income into database
+      const query = `INSERT INTO Income (UserID, IncomeName, Amount, IncomeDate, CategoryID) VALUES (?, ?, ?, ?, ?)`;
+      connection.query(
+        query,
+        [UserID, name, amount, date, category],
+        (error, results) => {
+          if (error) {
+            console.error("Error adding income:", error);
+            res.status(500).json({ error: "Error adding income" });
+          } else {
+            res.json({ message: "Income added successfully" });
+          }
+        }
+      );
+    })
+    .catch((error) => {
+      console.error("Error getting UserID:", error);
+      res.status(500).json({ error: "Error getting UserID" });
+    });
+});
+
+// Handle fetching all category names
+app.get("/api/expensecategories", (req, res) => {
+  // Query to retrieve all category names
+  const query = "SELECT CategoryName FROM ExpenseCategory";
+
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error("Error fetching categories: " + error.stack);
+      res.status(500).json({ error: "Error fetching categories" });
+    } else {
+      // Extract category names from the query results
+      const categories = results.map((result) => result.CategoryName);
+      res.json(categories); // Send the category names in the response
+    }
+  });
+});
+
+// Getting categoryID
+app.post("/api/expensecategoryid", (req, res) => {
+  const { categoryName } = req.body; // Extract category name from request body
+  // Query to retrieve category ID based on category name
+  const query = "SELECT CategoryID FROM ExpenseCategory WHERE CategoryName = ?";
+
+  connection.query(query, [categoryName], (error, results) => {
+    if (error) {
+      console.error("Error fetching category ID: " + error.stack);
+      res.status(500).json({ error: "Error fetching category ID" });
+    } else {
+      if (results.length > 0) {
+        const categoryId = results[0].CategoryID;
+        res.json({ categoryId }); // Send the category ID in the response
+      } else {
+        res.status(404).json({ error: "Category not found" });
+      }
+    }
+  });
+});
+
+// Handle fetching all category names
+app.get("/api/incomecategories", (req, res) => {
+  // Query to retrieve all category names
+  const query = "SELECT CategoryName FROM IncomeCategory";
+
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error("Error fetching categories: " + error.stack);
+      res.status(500).json({ error: "Error fetching categories" });
+    } else {
+      // Extract category names from the query results
+      const categories = results.map((result) => result.CategoryName);
+      res.json(categories); // Send the category names in the response
+    }
+  });
+});
+
+// Getting categoryID for income
+app.post("/api/incomecategoryid", (req, res) => {
+  const { categoryName } = req.body; // Extract category name from request body
+  // Query to retrieve category ID based on category name
+  const query = "SELECT CategoryID FROM IncomeCategory WHERE CategoryName = ?";
+
+  connection.query(query, [categoryName], (error, results) => {
+    if (error) {
+      console.error("Error fetching category ID: " + error.stack);
+      res.status(500).json({ error: "Error fetching category ID" });
+    } else {
+      if (results.length > 0) {
+        const categoryId = results[0].CategoryID;
+        res.json({ categoryId }); // Send the category ID in the response
+      } else {
+        res.status(404).json({ error: "Category not found" });
+      }
+    }
+  });
+});
+
+app.post("/api/expenses_summary", async (req, res) => {
+  try {
+    const { Username } = req.body;
+    const userID = await getUserIDByUsername(Username);
+    // console.log(userID);
+
+    const query = `SELECT CategoryName, SUM(Amount) AS TotalExpense FROM ExpenseCategory 
+                   LEFT JOIN Expense ON Expense.CategoryID = ExpenseCategory.CategoryID 
+                   WHERE Expense.UserID = ? 
+                   GROUP BY Expense.CategoryID`;
+
+    connection.query(query, [userID], (error, results) => {
+      if (error) {
+        console.error("Error fetching category expenses:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+      res.status(200).json(results);
+    });
+  } catch (error) {
+    console.error("Error fetching category expenses:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.post("/api/income_summary", async (req, res) => {
+  try {
+    const { Username } = req.body;
+    const userID = await getUserIDByUsername(Username);
+    // console.log(userID);
+
+    const query = `SELECT CategoryName, SUM(Amount) AS TotalIncome FROM IncomeCategory 
+                   LEFT JOIN Income ON Income.CategoryID = IncomeCategory.CategoryID 
+                   WHERE Income.UserID = ? 
+                   GROUP BY Income.CategoryID`;
+
+    connection.query(query, [userID], (error, results) => {
+      if (error) {
+        console.error("Error fetching category expenses:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+      res.status(200).json(results);
+    });
+  } catch (error) {
+    console.error("Error fetching category expenses:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Assuming you're using Express
+app.post("/api/addIncomeCategory", async (req, res) => {
+  const { categoryName } = req.body;
+
+  // Your code to insert the new category into the database
+  // Example:
+  const query = "INSERT INTO IncomeCategory (CategoryName) VALUES (?)";
+  connection.query(query, [categoryName], (error, results) => {
+    if (error) {
+      console.error("Error adding income category:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
+    }
+    res.status(200).json({ message: "Income category added successfully" });
+  });
+});
+
+app.post("/api/addExpenseCategory", async (req, res) => {
+  const { categoryName } = req.body;
+
+  // Your code to insert the new category into the database
+  // Example:
+  const query = "INSERT INTO ExpenseCategory (CategoryName) VALUES (?)";
+  connection.query(query, [categoryName], (error, results) => {
+    if (error) {
+      console.error("Error adding expense category:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
+    }
+    res.status(200).json({ message: "expense category added successfully" });
+  });
+});
+
+const PORT = process.env.PORT || 4000; // Use environment variable for port or default to 3000
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});

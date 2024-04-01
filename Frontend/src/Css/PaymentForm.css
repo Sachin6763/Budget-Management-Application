@@ -1,0 +1,40 @@
+.payment-form-container {
+  display: flex;
+  /* background-color: black; */
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 80px);
+}
+
+.incontainer {
+  background-color: #f9f9f9;
+  padding: 10px;
+  height: 540px;
+  display: flex;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgb(198, 182, 182);
+}
+
+.left-part-payment,
+.right-part-payment {
+  padding: 5px;
+  height: 530px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+
+  /* background-color: blue; */
+  /* height: 100%; */
+}
+
+.left-part-payment {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgb(198, 182, 182);
+}
+
+.cart-item-content {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgb(198, 182, 182);
+}

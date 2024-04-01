@@ -1,0 +1,118 @@
+.home-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+  /* height: calc(100vh-100px); */
+}
+
+.hero-section {
+  background-color: #f8b400;
+  text-align: center;
+  padding: 60px;
+  border-radius: 10px;
+  margin-bottom: 40px;
+}
+
+.hero-title {
+  font-size: 36px;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.hero-description {
+  font-size: 18px;
+  color: #ffffff;
+  margin-bottom: 30px;
+}
+
+.hero-button {
+  background-color: #e6caca;
+  color: #f800be;
+  border: none;
+  padding: 12px 24px;
+  text-decoration: none;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.hero-button:hover {
+  background-color: #f800c6;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.section-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #333333;
+}
+
+.about-section {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 10px;
+}
+
+.about-description {
+  font-size: 16px;
+  color: #333333;
+  line-height: 1.5;
+}
+
+.featured-products {
+  margin-top: 50px;
+}
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  justify-content: space-around;
+}
+
+.product-item {
+  flex: 0 1 300px; /* Set the width of each product item */
+  margin: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s;
+}
+
+.product-item:hover {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.product-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.product-price {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.add-to-cart-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.add-to-cart-button:hover {
+  background-color: #45a049;
+}

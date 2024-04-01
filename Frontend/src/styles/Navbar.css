@@ -1,0 +1,43 @@
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  background-color: #4caf50;
+  padding: 0 20px;
+}
+
+.brand-link {
+  text-decoration: none;
+  font-size: 24px;
+  color: white;
+}
+
+.links {
+  display: flex;
+  gap: 20px;
+}
+
+.links a,
+.user-icon,
+.dropdown span {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.dropdown {
+  z-index: 2;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

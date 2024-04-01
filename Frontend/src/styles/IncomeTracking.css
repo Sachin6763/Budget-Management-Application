@@ -1,0 +1,88 @@
+/* income.css */
+
+#income-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%; /* Set initial width to 50% */
+  max-width: 600px; /* Limit maximum width */
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #f0f0f0; /* Light gray background */
+  /* background-color: black; */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Adjust width for smaller screens */
+@media (max-width: 768px) {
+  #income-form-container {
+    width: 80%; /* Set width to 80% on smaller screens */
+  }
+}
+
+.income-header {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #333; /* Dark gray text color */
+  text-align: center;
+}
+
+.income-input-field {
+  width: calc(
+    100% - 20px
+  ); /* Adjust input width to be slightly less than container width */
+  max-width: 400px; /* Limit maximum input width */
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.income-input-field:focus {
+  border-color: #6c63ff; /* Purple border color when input is focused */
+}
+
+.income-submit-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #6c63ff; /* Purple button color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s;
+}
+
+.income-submit-button:hover {
+  background-color: #554fdb; /* Darker purple on hover */
+}
+
+.income-message {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #007bff; /* Blue message color */
+  text-align: center;
+}
+
+.category-select-container {
+  display: flex;
+  justify-content: space-around;
+  width: 90%;
+}
+
+.add-category-inside-button {
+  display: flex;
+  margin: 5px 15px;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
