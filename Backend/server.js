@@ -452,6 +452,51 @@ app.post("/api/incomes/removeincomeitem", async (req, res) => {
   }
 });
 
+// Goals
+
+// server.js
+
+app.post("/api/addNewGoals", async (req, res) => {
+  console.log(req.body);
+  try {
+    const { Username, GoalName, TargetAmount, Deadline } = req.body;
+    const UserID = await getUserIDByUsername(Username.Username);
+    const query =
+      "INSERT INTO FinancialGoal (UserID, GoalName, TargetAmount, Deadline) VALUES (?, ?, ?, ?)";
+    // console.log(Username, GoalName, TargetAmount, Deadline, UserID);
+    connection.query(
+      query,
+      [UserID, GoalName, TargetAmount, Deadline],
+      (error, results) => {
+        if (error) {
+          console.error("Error adding goal:", error);
+          res.status(500).json({ message: "Failed to add goal" });
+        } else {
+          res.status(201).json({ message: "Goal added successfully" });
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Error in adding goals :", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/api/getPreviousGoals/:Username", async (req, res) => {
+  const Username = req.params.Username;
+  const UserID = await getUserIDByUsername(Username);
+  // console.log(UserID);
+  const query = "SELECT * FROM FinancialGoal WHERE UserID = ?";
+  connection.query(query, [UserID], (error, results) => {
+    if (error) {
+      console.error("Error fetching goals:", error);
+      res.status(500).json({ message: "Failed to fetch goals" });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+});
+
 const PORT = process.env.PORT || 4000; // Use environment variable for port or default to 3000
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
