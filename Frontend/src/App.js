@@ -14,7 +14,7 @@ import Register from "./nComponents/Register";
 import AddTransactionForm from "./nComponents/ExpenseTracking";
 import AddIncomeForm from "./nComponents/IncomeTracking";
 import Summary from "./nComponents/Summary";
-// import ProductList from "./Components/ProductList";
+import FinancialGoals from "./nComponents/FinancialGoal/FinancialGoals";
 // import Order from "./Components/Order";
 // import Cart from "./Components/Cart";
 
@@ -235,6 +235,10 @@ export default function App() {
             element={<AddIncomeForm Username={user} />}
           />
           <Route path="/summary" element={<Summary Username={user} />} />
+          <Route
+            path="/financial_goals"
+            element={<FinancialGoals Username={user} />}
+          />
 
           {/* <Route path="/payment" element={<Payment />} /> */}
         </Routes>

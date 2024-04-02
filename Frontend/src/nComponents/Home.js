@@ -43,10 +43,10 @@ const HomePage = () => {
           </div>
         </div>
         <div className="cta-buttons">
-          <Link to="/auth" className="auth-button">
+          <Link to="/login" className="auth-button">
             Get Started
           </Link>
-          <Link to="/finance" className="finance-button">
+          <Link to="/expense_tracking" className="finance-button">
             Explore Features
           </Link>
         </div>

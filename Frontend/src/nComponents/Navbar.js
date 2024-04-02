@@ -32,6 +32,7 @@ const Navbar = ({ user, setUser }) => {
             <Link to="/expense_tracking">Expense</Link>
             <Link to="/income_tracking">Income</Link>
             <Link to="/summary">Summary</Link>
+            <Link to="/financial_goals">Goals</Link>
             {/* <Link to="/order">Order</Link> */}
             <div className="user-icon" onClick={toggleDropdown}>
               <FaUser />
