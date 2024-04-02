@@ -70,3 +70,31 @@
     margin-top: 20px; /* Add some space between the two sections on smaller screens */
   }
 }
+
+/* Button style */
+.remove-button {
+  margin: 5px;
+  padding: 2px;
+  background-color: #1811e1; /* Red color */
+  color: white;
+  border: none;
+  border-radius: 20px;
+  width: 35px; /* Adjust width as needed */
+  height: 25px; /* Adjust height as needed */
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+.remove-button:hover {
+  background-color: rgb(203, 19, 32);
+  color: black;
+}
+
+.remove-button:focus {
+  outline: none; /* Removes focus outline */
+}
+
+.remove-button:active {
+  transform: scale(0.95); /* Slightly scales down the button when clicked */
+}

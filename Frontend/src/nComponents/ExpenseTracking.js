@@ -84,7 +84,8 @@ const AddExpenseForm = ({ Username }) => {
 
   const emptyForm = () => {
     for (const key in formData) {
-      if (formData.hasOwnProperty(key)) {
+      if (formData.hasOwnProperty(key) && key !== "UserID" && key != "Date") {
+        // console.log(key);
         formData[key] = "";
       }
     }
@@ -206,9 +207,11 @@ const AddExpenseForm = ({ Username }) => {
         onClick={handleAddExpense}
         disabled={!isFormDataFilled()}
         className="income-submit-button"
+        style={{ cursor: !isFormDataFilled() ? "not-allowed" : "pointer" }}
       >
         Add Expense
       </button>
+
       {showToaster && <div className="toaster">{toasterMessage}</div>}
     </div>
   );

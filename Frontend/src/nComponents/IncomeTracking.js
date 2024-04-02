@@ -47,7 +47,7 @@ const AddIncomeForm = ({ Username }) => {
 
   const emptyForm = () => {
     for (const key in formData) {
-      if (formData.hasOwnProperty(key)) {
+      if (formData.hasOwnProperty(key) && key !== "UserID" && key != "Date") {
         formData[key] = "";
       }
     }
@@ -241,6 +241,7 @@ const AddIncomeForm = ({ Username }) => {
         onClick={handleAddIncome}
         disabled={!isFormDataFilled()}
         className="income-submit-button"
+        style={{ cursor: !isFormDataFilled() ? "not-allowed" : "pointer" }}
       >
         Add Income
       </button>

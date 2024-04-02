@@ -2,6 +2,7 @@ const express = require("express");
 const mysql = require("mysql2");
 const path = require("path");
 const cors = require("cors"); // Import CORS middleware
+const { get } = require("https");
 
 // const bodyParser = require("body-parser");
 // app.use(bodyParser.json());
@@ -114,6 +115,52 @@ const getUserIDByUsername = (username) => {
         } else {
           // User not found, send an error response
           reject("User not found");
+        }
+      }
+    });
+  });
+};
+
+const getExpenseCategoryIDByCategoryName = (CategoryName) => {
+  return new Promise((resolve, reject) => {
+    const getUserIDQuery = `SELECT CategoryID FROM ExpenseCategory WHERE CategoryName = ?`;
+    connection.query(getUserIDQuery, [CategoryName], (error, results) => {
+      if (error) {
+        console.error("Error getting CategoryID: " + error.stack);
+        reject("Error getting CategoryID");
+      } else {
+        // console.log("here2", results);
+        if (results.length > 0) {
+          // User found, send the CategoryID in response
+          const CategoryID = results[0].CategoryID;
+          // console.log(CategoryID);
+          resolve(CategoryID);
+        } else {
+          // User not found, send an error response
+          reject("Category not found");
+        }
+      }
+    });
+  });
+};
+
+const getIncomeCategoryIDByCategoryName = (CategoryName) => {
+  return new Promise((resolve, reject) => {
+    const getUserIDQuery = `SELECT CategoryID FROM IncomeCategory WHERE CategoryName = ?`;
+    connection.query(getUserIDQuery, [CategoryName], (error, results) => {
+      if (error) {
+        console.error("Error getting CategoryID: " + error.stack);
+        reject("Error getting CategoryID");
+      } else {
+        // console.log("here2", results);
+        if (results.length > 0) {
+          // User found, send the CategoryID in response
+          const CategoryID = results[0].CategoryID;
+          // console.log(CategoryID);
+          resolve(CategoryID);
+        } else {
+          // User not found, send an error response
+          reject("Category not found");
         }
       }
     });
@@ -333,6 +380,76 @@ app.post("/api/addExpenseCategory", async (req, res) => {
     }
     res.status(200).json({ message: "expense category added successfully" });
   });
+});
+
+// Endpoint to remove an expense item by ID
+app.post("/api/expenses/removeexpenseitem", async (req, res) => {
+  try {
+    const { expenseCategoryName, Username } = req.body;
+    // console.log(Username, expenseCategoryName);
+    const UserId = await getUserIDByUsername(Username);
+    const expenseCategoryId = await getExpenseCategoryIDByCategoryName(
+      expenseCategoryName
+    );
+    // console.log(UserId, expenseCategoryId);
+
+    // console.log("here");
+
+    // Query to delete the expense item from the database
+    const deleteQuery =
+      "DELETE FROM Expense WHERE CategoryID=? and UserID=? ; ";
+    // Execute the delete query
+    connection.query(
+      deleteQuery,
+      [expenseCategoryId, UserId],
+      (error, results) => {
+        if (error) {
+          console.error("Error removing expense:", error);
+          res.status(500).json({ message: "Failed to remove expense" });
+        } else {
+          res.status(200).json({ message: "Expense removed successfully" });
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Error fetching category expenses:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Endpoint to remove an income item by ID
+
+app.post("/api/incomes/removeincomeitem", async (req, res) => {
+  try {
+    const { incomeCategoryName, Username } = req.body;
+    // console.log(Username, expenseCategoryName);
+    const UserId = await getUserIDByUsername(Username);
+    const incomeCategoryId = await getIncomeCategoryIDByCategoryName(
+      incomeCategoryName
+    );
+    console.log(UserId, incomeCategoryId);
+
+    // console.log("here");
+
+    // Query to delete the expense item from the database
+    const deleteQuery = "DELETE FROM Income WHERE CategoryID=? and UserID=? ; ";
+    // Execute the delete query
+    connection.query(
+      deleteQuery,
+      [incomeCategoryId, UserId],
+      (error, results) => {
+        if (error) {
+          console.error("Error removing expense:", error);
+          res.status(500).json({ message: "Failed to remove expense" });
+        } else {
+          res.status(200).json({ message: "Expense removed successfully" });
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Error fetching category expenses:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 const PORT = process.env.PORT || 4000; // Use environment variable for port or default to 3000
