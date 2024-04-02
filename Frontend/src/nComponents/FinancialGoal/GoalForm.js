@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 const GoalForm = ({ addGoal, Username }) => {
   const [goalName, setGoalName] = useState("");
-  const [targetAmount, setTargetAmount] = useState(0);
+  const [targetAmount, setTargetAmount] = useState("");
   const [deadline, setDeadline] = useState("");
 
   const handleSubmit = (e) => {
@@ -17,7 +17,7 @@ const GoalForm = ({ addGoal, Username }) => {
       Deadline: deadline,
     }); // Assuming UserID is 1
     setGoalName("");
-    setTargetAmount(0);
+    setTargetAmount("");
     setDeadline("");
   };
 

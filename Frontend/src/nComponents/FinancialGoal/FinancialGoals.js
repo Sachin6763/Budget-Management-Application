@@ -31,7 +31,7 @@ const FinancialGoals = (Username) => {
         `http://localhost:4000/api/getPreviousGoals/${Username.Username}`
       );
       const data = await response.json();
-      console.log("success in getting goals");
+      // console.log("success in getting goals");
       setGoals(data);
     } catch (error) {
       console.error("Error fetching goals:", error);
@@ -56,6 +56,45 @@ const FinancialGoals = (Username) => {
     }
   };
 
+  const handleDiscardGoal = async (goalID) => {
+    try {
+      const response = await fetch(
+        `http://localhost:4000/api/discardGoal/${goalID}`,
+        {
+          method: "POST",
+        }
+      );
+      if (response.ok) {
+        // Remove the discarded goal from the list
+        const updatedGoals = goals.filter((goal) => goal.GoalID !== goalID);
+        setGoals(updatedGoals);
+      } else {
+        console.error("Failed to discard goal.");
+      }
+    } catch (error) {
+      console.error("Error discarding goal:", error);
+    }
+  };
+
+  const handleCompleteGoal = async (goalID) => {
+    try {
+      const response = await fetch(
+        `http://localhost:4000/api/completeGoal/${goalID}`,
+        {
+          method: "POST",
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Failed to complete goal.");
+      } else {
+        fetchGoals();
+      }
+    } catch (error) {
+      console.error("Error completing goal:", error);
+    }
+  };
+
   return (
     <div className="goal-container">
       <h1>Budget Goal Page</h1>
@@ -66,7 +105,14 @@ const FinancialGoals = (Username) => {
         </button>
       </div>
       {showAddGoalForm && <GoalForm addGoal={addGoal} Username={Username} />}
-      {!showAddGoalForm && <GoalList goals={goals} Username={Username} />}
+      {!showAddGoalForm && (
+        <GoalList
+          goals={goals}
+          Username={Username}
+          handleDiscardGoal={handleDiscardGoal}
+          handleCompleteGoal={handleCompleteGoal}
+        />
+      )}
       {showToaster && <div className="toaster">{toasterMessage}</div>}
     </div>
   );

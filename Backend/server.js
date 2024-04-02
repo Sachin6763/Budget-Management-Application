@@ -1,7 +1,8 @@
 const express = require("express");
 const mysql = require("mysql2");
 const path = require("path");
-const cors = require("cors"); // Import CORS middleware
+const cors = require("cors");
+const cron = require("node-cron");
 const { get } = require("https");
 
 // const bodyParser = require("body-parser");
@@ -28,6 +29,34 @@ app.use(express.json()); // Parse JSON request bodies
 
 // Serve static files from the root public folder of your React app
 app.use(express.static(path.join(__dirname, "../Frontend/public")));
+
+const updateGoalStatus = async () => {
+  try {
+    const currentDate = new Date().toISOString().split("T")[0]; // Get current date
+    const query =
+      "SELECT * FROM FinancialGoal WHERE Status = 'Pending' AND Deadline < ?";
+    connection.query(query, [currentDate], (error, results) => {
+      if (error) {
+        console.error("Error updating goal status:", error);
+      } else {
+        results.forEach((goal) => {
+          const updateQuery =
+            "UPDATE FinancialGoal SET Status = 'Failed' WHERE GoalID = ?";
+          connection.query(updateQuery, [goal.GoalID], (error) => {
+            if (error) {
+              console.error("Error updating goal status:", error);
+            }
+          });
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error updating goal status:", error);
+  }
+};
+
+// Schedule the background task to run once a day at midnight
+cron.schedule("0 0 * * *", updateGoalStatus); // Runs every day at midnight
 
 app.post("/api/signup", (req, res) => {
   const { UserID, Password, Email } = req.body;
@@ -472,6 +501,7 @@ app.post("/api/addNewGoals", async (req, res) => {
           console.error("Error adding goal:", error);
           res.status(500).json({ message: "Failed to add goal" });
         } else {
+          updateGoalStatus();
           res.status(201).json({ message: "Goal added successfully" });
         }
       }
@@ -496,6 +526,45 @@ app.get("/api/getPreviousGoals/:Username", async (req, res) => {
     }
   });
 });
+
+app.post("/api/discardGoal/:goalID", async (req, res) => {
+  const goalID = req.params.goalID;
+  try {
+    const deleteQuery = "DELETE FROM FinancialGoal WHERE GoalID = ?";
+    connection.query(deleteQuery, [goalID], (error, results) => {
+      if (error) {
+        console.error("Error discarding goal:", error);
+        res.status(500).json({ message: "Failed to discard goal" });
+      } else {
+        res.status(200).json({ message: "Goal discarded successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error discarding goal:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+app.post("/api/completeGoal/:goalID", async (req, res) => {
+  const goalID = req.params.goalID;
+  try {
+    const updateQuery =
+      "UPDATE FinancialGoal SET Status = 'Completed' WHERE GoalID = ?";
+    connection.query(updateQuery, [goalID], (error, results) => {
+      if (error) {
+        console.error("Error completing goal:", error);
+        res.status(500).json({ message: "Failed to complete goal" });
+      } else {
+        res.status(200).json({ message: "Goal completed successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error completing goal:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// Function to update the status of goals
 
 const PORT = process.env.PORT || 4000; // Use environment variable for port or default to 3000
 app.listen(PORT, () => {
