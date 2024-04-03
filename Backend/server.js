@@ -637,6 +637,122 @@ cron.schedule("0 0 * * *", updateGoalStatus);
 // // Schedule the task to run every day
 // cron.schedule("0 * * * *", fun);
 
+app.post("/api/prediction_expense", (req, res) => {
+  const { Username } = req.body;
+  const sql = `
+    SELECT Amount, ExpenseDate, ExpenseID 
+    FROM Expense 
+    WHERE UserID = (
+      SELECT UserID 
+      FROM User 
+      WHERE Username = ?
+    )
+  `;
+  connection.query(sql, [Username], (err, results) => {
+    if (err) {
+      console.error("Error fetching expenses:", err);
+      res.status(500).json({ error: "Error fetching expenses" });
+      return;
+    }
+    console.log(results);
+    res.json(results);
+  });
+});
+
+app.post("/api/prediction_income", (req, res) => {
+  const { Username } = req.body;
+  const sql = `
+    SELECT Amount, IncomeDate, IncomeID 
+    FROM Income 
+    WHERE UserID = (
+      SELECT UserID 
+      FROM User 
+      WHERE Username = ?
+    )
+  `;
+  connection.query(sql, [Username], (err, results) => {
+    if (err) {
+      console.error("Error fetching incomes:", err);
+      res.status(500).json({ error: "Error fetching incomes" });
+      return;
+    }
+    console.log(results);
+    res.json(results);
+  });
+});
+
+// Anamolies
+
+app.get("/api/expense_anomalies", async (req, res) => {
+  try {
+    const { username } = req.query;
+    const userID = await getUserIDByUsername(username);
+    const query = `
+      SELECT e.ExpenseName, ec.CategoryName AS ExpenseCategory, e.Amount, e.ExpenseDate
+      FROM Expense e
+      JOIN ExpenseCategory ec ON e.CategoryID = ec.CategoryID
+      JOIN (
+        SELECT CategoryID, AVG(Amount) AS AvgExpense
+        FROM Expense
+        WHERE UserID = ${userID}
+        GROUP BY CategoryID
+      ) AS avg_expenses
+      ON e.CategoryID = avg_expenses.CategoryID
+      WHERE e.UserID = ${userID} AND e.Amount > 1.5 * avg_expenses.AvgExpense;
+    `;
+
+    connection.query(query, (error, results) => {
+      if (error) {
+        console.error("Error executing query:", error);
+        res
+          .status(500)
+          .json({ error: "An error occurred while fetching anomalies" });
+      } else {
+        res.json(results);
+      }
+    });
+  } catch (error) {
+    console.error("Error in fetching anomalies:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// income- anamolies
+
+app.get("/api/income_anomalies", async (req, res) => {
+  try {
+    const { username } = req.query;
+    const userID = await getUserIDByUsername(username);
+    const query = `
+      SELECT i.IncomeName AS Name, ic.CategoryName AS Category, i.Amount, i.IncomeDate AS Date
+      FROM Income i
+      JOIN IncomeCategory ic ON i.CategoryID = ic.CategoryID
+      JOIN (
+        SELECT CategoryID, AVG(Amount) AS AvgIncome
+        FROM Income
+        WHERE UserID = ${userID}
+        GROUP BY CategoryID
+      ) AS avg_incomes
+      ON i.CategoryID = avg_incomes.CategoryID
+      WHERE i.UserID = ${userID} AND i.Amount > 1.5 * avg_incomes.AvgIncome;
+    `;
+
+    connection.query(query, (error, results) => {
+      if (error) {
+        console.error("Error executing query:", error);
+        res
+          .status(500)
+          .json({ error: "An error occurred while fetching income anomalies" });
+      } else {
+        res.json(results);
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching income anomalies:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -1,0 +1,162 @@
+/* Prediction.css */
+
+.prediction {
+  display: flex;
+  justify-content: center; /* Horizontally center the components */
+  align-items: center; /* Vertically center the components */
+  height: 100vh; /* Make the prediction container full height */
+}
+
+.prediction-sidebar {
+  width: 300px;
+  background-color: #1a0787;
+  padding: 20px;
+}
+
+.prediction-button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 20px;
+  font-size: 20px;
+  border: none;
+  background-color: #17cdd7;
+  cursor: pointer;
+}
+
+.content {
+  padding: 20px;
+}
+
+.prediction-button.active {
+  background-color: #007bff; /* Change to your desired color */
+  color: #ffffff; /* Change to your desired text color */
+}
+
+/* IncomeForecasting.css */
+
+.income-forecasting {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* SavingGoalProjections.css */
+
+.saving-goal-projections {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ExpenseTrendAnalysis.css */
+
+.expense-trend-analysis-container h2,
+.anomaly-detection-container h2 {
+  background-color: #f8f9fa; /* Light gray background */
+  border-radius: 8px; /* Rounded corners */
+  margin: 5px;
+  padding: 20px; /* Add some padding */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  text-align: center; /* Center the content */
+}
+
+.expense-amount {
+  background-color: #c8e84a;
+  width: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px; /* Rounded corners */
+  height: 100px;
+  color: #343a40; /* Dark text color */
+  font-size: 40px; /* Larger font size */
+  margin: 20px; /* Add space above the expense amount */
+  padding: 20px; /* Add some padding */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  text-align: center; /* Center the content */
+  animation: bounceScale 2s infinite alternate linear, colorChange 3s infinite;
+}
+
+@keyframes bounceScale {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.1);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes colorChange {
+  0% {
+    color: white;
+  }
+  50% {
+    color: black; /* Red color */
+  }
+  100% {
+    color: rgb(15, 176, 13);
+  }
+}
+
+/* Anamoly Detection */
+
+/* .anomaly-detection-container h2 {
+  margin-bottom: 5px;
+  padding: 20px;
+} */
+
+.anomaly-buttons {
+  margin: 20px 10px;
+}
+
+.anomaly-buttons button {
+  padding: 10px 20px;
+  margin-right: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #b2e10b;
+  color: #333;
+}
+
+.anomaly-buttons button.active {
+  background-color: #333;
+  color: #fff;
+}
+
+.anomaly-component {
+  background-color: #7e2181;
+}
+
+.income-anomaly-detection-container {
+  padding: 20px;
+}
+
+.anomalies-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.anomaly-item {
+  background-color: #f4f4f4;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.anomaly-item p {
+  margin: 5px 0;
+}
+
+.anomaly-item strong {
+  font-weight: bold;
+  margin-right: 5px;
+}
