@@ -564,9 +564,80 @@ app.post("/api/completeGoal/:goalID", async (req, res) => {
   }
 });
 
-// Function to update the status of goals
+cron.schedule("0 0 * * *", updateGoalStatus);
 
-const PORT = process.env.PORT || 4000; // Use environment variable for port or default to 3000
+// prediction model
+
+// // expenseController.js
+// const { spawn } = require("child_process");
+
+// const fetchExpenseHistory = async () => {
+//   return new Promise((resolve, reject) => {
+//     try {
+//       // Query to fetch expense history from the database
+//       const query = `
+//         SELECT
+//           e.ExpenseID,
+//           e.ExpenseName,
+//           e.Amount,
+//           e.ExpenseDate,
+//           ec.CategoryName
+//         FROM Expense as e
+//         INNER JOIN ExpenseCategory as ec ON e.CategoryID = ec.CategoryID
+//         ORDER BY e.ExpenseDate DESC
+//       `;
+
+//       // Execute the query
+//       connection.query(query, (error, results) => {
+//         if (error) {
+//           console.error("Error fetching expense history:", error);
+//           reject(error); // Reject the Promise if there's an error
+//         } else {
+//           resolve(results); // Resolve the Promise with the fetched data
+//         }
+//       });
+//     } catch (error) {
+//       console.error("Error fetching expense history:", error);
+//       reject(error); // Reject the Promise if there's an error
+//     }
+//   });
+// };
+
+// const sendDataToModel = (data) => {
+//   const pythonProcess = spawn("python", ["./model/expense_model.py"]);
+
+//   pythonProcess.stdin.write(JSON.stringify(data));
+//   pythonProcess.stdin.end();
+
+//   pythonProcess.stdout.on("data", (data) => {
+//     console.log(`Model training output: ${data}`);
+//   });
+
+//   pythonProcess.stderr.on("data", (data) => {
+//     console.error(`Error running model training: ${data}`);
+//   });
+
+//   pythonProcess.on("close", (code) => {
+//     console.log(`Model training process exited with code ${code}`);
+//   });
+// };
+
+// const fun = async () => {
+//   try {
+//     console.log("Fetching expense history...");
+//     const historicalData = await fetchExpenseHistory(); // Wait for the data to be fetched
+//     console.log("Expense history:", historicalData);
+//     sendDataToModel(historicalData);
+//     console.log("here");
+//   } catch (error) {
+//     console.error("Error:", error);
+//   }
+// };
+
+// // Schedule the task to run every day
+// cron.schedule("0 * * * *", fun);
+
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
