@@ -8,19 +8,19 @@
   width: 300px; /* Increased width by 20px */
   padding: 20px 30px 30px 30px;
   /* min-height: 300px; */
-  border: 1px solid #ceb9b9;
+  /* border: 1px solid #ceb9b9; */
   border-radius: 10px;
   text-align: center;
   margin: 20px auto;
-  background-color: #ceacac; /* Attractive background color */
+  background-color: #716d6d; /* Attractive background color */
   /* background-color: black; */
   /* border: 2px solid red; */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for a card-like appearance */
+  box-shadow: 0 4px 8px rgba(53, 52, 52, 0.1); /* Box shadow for a card-like appearance */
   transition: all 0.3s ease; /* Smooth transition for hover effect */
 }
 
 .form-container:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Shadow effect on hover */
+  box-shadow: 0 8px 16px rgba(72, 71, 71, 0.2); /* Shadow effect on hover */
 }
 
 h2 {
@@ -28,11 +28,13 @@ h2 {
   font-size: 24px;
 }
 
-.input-field {
+.login-input-field {
   width: calc(100% - 20px);
   padding: 10px;
   margin-bottom: 25px;
-  border: 1px solid #ccc;
+  /* border: 1px solid #0f0404; */
+  /* background-color: black;
+  color: white; */
   border-radius: 5px;
   box-sizing: border-box;
   font-size: 16px;
@@ -41,7 +43,7 @@ h2 {
 .submit-button {
   width: calc(100% - 20px);
   padding: 10px;
-  background-color: #4caf50;
+  background-color: black;
   color: white;
   border: none;
   border-radius: 5px;
@@ -51,7 +53,7 @@ h2 {
 }
 
 .submit-button:hover {
-  background-color: #45a049;
+  background-color: greenyellow;
 }
 
 /* Responsive Design */

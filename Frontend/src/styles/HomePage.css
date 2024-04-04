@@ -3,8 +3,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Set height to viewport height for full-screen */
-  background-color: #f9f9f9; /* Light background color */
+  height: calc(
+    100vh - 80px
+  ); /* Set height to viewport height for full-screen */
 }
 
 .home-content {
@@ -73,15 +74,106 @@
 }
 
 /* Styles for text and buttons */
-.home-content h1 {
-  color: #333; /* Text color */
-  font-size: 36px; /* Larger font size for heading */
-  margin-bottom: 20px; /* Increased margin below heading */
+
+.home-content {
+  color: white;
+  font-size: 24px; /* Adjust font size as needed */
+  font-family: Arial, sans-serif; /* Choose a suitable font family */
+  line-height: 1.5; /* Adjust line height for readability */
+  text-align: center; /* Center-align text */
+  padding: 20px; /* Add padding for spacing */
+  /* Add any other desired styles */
 }
-iuo .home-content p {
-  color: #f4eaea; /* Text color */
-  font-size: 18px; /* Larger font size for paragraph */
-  margin-bottom: 30px; /* Increased margin below paragraph */
+
+.home-content h1 {
+  margin-bottom: 2px;
+  font-family: Oswald;
+  font-size: 50px;
+  animation: Color 4s linear infinite, fadeIn 1s ease-in-out;
+  -webkit-animation: Color 4s ease-in-out infinite;
+  text-shadow: 2px 2px #f0f0f0;
+}
+
+@keyframes Color {
+  0% {
+    color: #a0d468;
+  }
+
+  20% {
+    color: #4fc1e9;
+  }
+
+  40% {
+    color: #ffce54;
+  }
+
+  60% {
+    color: #fc6e51;
+  }
+
+  80% {
+    color: #ed5565;
+  }
+
+  100% {
+    color: #ac92ec;
+  }
+}
+
+@-moz-keyframes Color {
+  0% {
+    color: #a0d468;
+  }
+
+  20% {
+    color: #4fc1e9;
+  }
+
+  40% {
+    color: #ffce54;
+  }
+
+  60% {
+    color: #fc6e51;
+  }
+
+  80% {
+    color: #ed5565;
+  }
+
+  100% {
+    color: #ac92ec;
+  }
+}
+
+@-webkit-keyframes Color {
+  0% {
+    color: #a0d468;
+  }
+
+  20% {
+    color: #4fc1e9;
+  }
+
+  40% {
+    color: #ffce54;
+  }
+
+  60% {
+    color: #fc6e51;
+  }
+
+  80% {
+    color: #ed5565;
+  }
+
+  100% {
+    color: #ac92ec;
+  }
+}
+
+.home-content p {
+  text-shadow: 1px 1px wheat;
 }
 
 .cta-buttons .auth-button,
@@ -113,7 +205,6 @@ iuo .home-content p {
   }
 }
 
-.home-content h1,
 .home-content p,
 .cta-buttons {
   animation: fadeIn 1s ease-in-out; /* Fade in animation for content */

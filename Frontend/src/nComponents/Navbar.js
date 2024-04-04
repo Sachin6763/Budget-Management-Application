@@ -40,8 +40,8 @@ const Navbar = ({ user, setUser }) => {
               {isDropdownOpen && (
                 <div className="dropdown">
                   {/* You can add more options here */}
-                  <span>{user}</span>
                   <span onClick={handleLogout}>Logout</span>
+                  <span>{user}</span>
                 </div>
               )}
             </div>

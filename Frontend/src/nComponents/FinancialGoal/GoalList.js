@@ -20,7 +20,6 @@ const GoalList = ({
 
   return (
     <div className="goal-list-container">
-      <h2>Previous Goals</h2>
       <table>
         <thead>
           <tr>
@@ -35,9 +34,7 @@ const GoalList = ({
         <tbody>
           {goals.map((goal, index) => (
             <tr key={index} className={goal.Status.toLowerCase()}>
-              <td>
-                <strong>{goal.GoalName}</strong>
-              </td>
+              <td>{goal.GoalName}</td>
               <td>${goal.TargetAmount}</td>
               <td>{formatDate(goal.Deadline)}</td>
               <td>{goal.Status}</td>

@@ -97,7 +97,6 @@ const FinancialGoals = (Username) => {
 
   return (
     <div className="goal-container">
-      <h1>Budget Goal Page</h1>
       <div className="goal-buttons-container">
         <button onClick={() => setShowAddGoalForm(true)}>Add New Goal</button>
         <button onClick={() => setShowAddGoalForm(false)}>

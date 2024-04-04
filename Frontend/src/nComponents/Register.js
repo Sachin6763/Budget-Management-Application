@@ -56,21 +56,21 @@ const Register = () => {
         placeholder="Username"
         value={UserID}
         onChange={(e) => setUserID(e.target.value)}
-        className="input-field"
+        className="login-input-field"
       />
       <input
         type="password"
         placeholder="Password"
         value={Password}
         onChange={(e) => setPassword(e.target.value)}
-        className="input-field"
+        className="login-input-field"
       />
       <input
         type="email"
         placeholder="Email"
         value={Email}
         onChange={(e) => setEmail(e.target.value)}
-        className="input-field"
+        className="login-input-field"
       />
       <button onClick={handleRegister} className="submit-button">
         Register

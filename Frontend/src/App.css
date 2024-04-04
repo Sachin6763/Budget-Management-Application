@@ -2,8 +2,9 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-color: #b54d4d;
+  background-image: url("./images/back_image.png");
   box-sizing: border-box;
+  background-size: cover;
 }
 
 .main-content {

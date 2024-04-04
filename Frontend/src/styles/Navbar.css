@@ -1,43 +1,91 @@
-/* Navbar Styles */
 .navbar {
+  background-color: #333; /* Dark background color */
+  color: #fff; /* Text color */
   display: flex;
+  height: 60px;
   justify-content: space-between;
   align-items: center;
-  height: 80px;
-  background-color: #4caf50;
-  padding: 0 20px;
+  padding: 10px 20px;
 }
 
 .brand-link {
   text-decoration: none;
+  color: #fff; /* Brand text color */
   font-size: 24px;
-  color: white;
+}
+
+.brand-link {
+  text-decoration: none;
+  color: #fff; /* Brand text color */
+  font-size: 24px;
+  transition: transform 0.3s; /* Animation transition */
+}
+
+.brand-link:hover {
+  transform: scale(1.1); /* Scale up the text on hover */
 }
 
 .links {
   display: flex;
-  gap: 20px;
 }
 
-.links a,
-.user-icon,
-.dropdown span {
-  color: black;
+.links a {
+  padding: 10px;
+  border-radius: 10px;
   text-decoration: none;
+  color: #fff; /* Link text color */
+  margin-right: 20px; /* Separate each button by 20px */
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+}
+
+.links a:hover {
+  background-color: #555; /* Darker background color on hover */
+}
+
+.user-icon {
+  padding: 10px;
+  position: relative;
   cursor: pointer;
-  font-size: 18px;
 }
 
 .dropdown {
-  z-index: 2;
   position: absolute;
-  top: 50px;
+  top: 30px;
   right: 0;
-  background-color: #f9f9f9;
+  background-color: #333;
+  color: #fff; /* Dropdown text color */
   padding: 10px;
-  border: 1px solid #ccc;
+  margin: 5px;
   border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: none; /* Hide the dropdown by default */
+}
+
+.links a:focus,
+.links a.active {
+  background-color: #555; /* Darker background color for active link */
+  color: #fff; /* Text color for active link */
+}
+
+.user-icon:hover .dropdown {
+  display: block; /* Show the dropdown on hover */
+}
+
+.dropdown span {
+  display: block;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.dropdown span:last-child {
+  margin-bottom: 0;
+}
+
+.dropdown span:hover {
+  color: black; /* Link text color on hover */
+  background-color: wheat;
+}
+
+.dropdown span:hover .dropdown {
+  display: block;
 }

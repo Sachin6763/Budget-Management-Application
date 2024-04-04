@@ -31,7 +31,7 @@
 
 /* Graph Container */
 .graph-container {
-  background-color: #901616;
+  /* background-color: #901616; */
   border-radius: 20px;
   padding: 30px;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);

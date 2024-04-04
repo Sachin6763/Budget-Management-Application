@@ -12,10 +12,12 @@ const HomePage = () => {
     <div className="home-container">
       <div className="home-content">
         <h1>Welcome to Budget Management App</h1>
+
         <p>
           Take control of your finances with our intuitive budget management
           application.
         </p>
+
         <div className="image-grid">
           <div className="image-box">
             <img src={expenseTrackingImage} alt="Expense Tracking" />

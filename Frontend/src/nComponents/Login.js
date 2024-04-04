@@ -72,17 +72,17 @@ const Login = ({ loggedIn }) => {
         placeholder="Username"
         value={userID}
         onChange={(e) => setUserID(e.target.value)}
-        className="input-field"
+        className="login-input-field"
       />
       <input
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="input-field"
+        className="login-input-field"
       />
       <button onClick={handleLogin} className="submit-button">
-        Login
+        LOGIN
       </button>
       {showToaster && <div className="toaster">{toasterMessage}</div>}
     </div>
