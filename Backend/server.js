@@ -62,7 +62,7 @@ const bcrypt = require("bcrypt");
 
 app.post("/api/signup", async (req, res) => {
   const { UserID, Password, Email } = req.body;
-  console.log(UserID, Password, Email);
+  // console.log(UserID, Password, Email);
 
   try {
     // Hash the password
@@ -125,7 +125,7 @@ app.post("/api/signup", async (req, res) => {
 
 app.post("/api/login", async (req, res) => {
   const { userID, password } = req.body;
-  console.log(userID, password); // Ensure you're receiving the correct values
+  // console.log(userID, password); // Ensure you're receiving the correct values
 
   try {
     const query = `SELECT * FROM user WHERE Username = ?`;
@@ -171,7 +171,7 @@ const getUserIDByUsername = (username) => {
           resolve(UserID);
         } else {
           // If no user found, reject the promise with a custom error message
-          reject(new Error("User not found"));
+          reject("User not found");
         }
       }
     });
@@ -254,11 +254,11 @@ app.post("/api/addExpense", (req, res) => {
 
 app.post("/api/addIncome", (req, res) => {
   const { Username, name, amount, date, category } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   // Get UserID by username
   getUserIDByUsername(Username)
     .then((UserID) => {
-      console.log(UserID);
+      // console.log(UserID);
       // Insert income into database
       const query = `INSERT INTO Income (UserID, IncomeName, Amount, IncomeDate, CategoryID) VALUES (?, ?, ?, ?, ?)`;
       connection.query(
@@ -360,7 +360,7 @@ app.post("/api/expenses_summary", async (req, res) => {
   try {
     const { Username, selectedMonth, selectedYear } = req.body;
     const userID = await getUserIDByUsername(Username);
-    console.log(selectedMonth, "ethe", selectedYear);
+    // console.log(selectedMonth, "ethe", selectedYear);
     const query = `SELECT CategoryName, SUM(Amount) AS TotalExpense 
                FROM ExpenseCategory 
                LEFT JOIN Expense ON Expense.CategoryID = ExpenseCategory.CategoryID 
@@ -496,7 +496,7 @@ app.post("/api/incomes/removeincomeitem", async (req, res) => {
     const incomeCategoryId = await getIncomeCategoryIDByCategoryName(
       incomeCategoryName
     );
-    console.log(UserId, incomeCategoryId);
+    // console.log(UserId, incomeCategoryId);
 
     // console.log("here");
 
@@ -526,17 +526,16 @@ app.post("/api/incomes/removeincomeitem", async (req, res) => {
 // server.js
 
 app.post("/api/addNewGoals", async (req, res) => {
-  console.log(req.body);
   try {
     const { Username, GoalName, TargetAmount, Deadline } = req.body;
-    console.log(Username.Username);
 
     // Fetch UserID by Username
-    const UserID = await getUserIDByUsername(Username.Username);
-    if (!UserID) {
-      // If UserID is not found, send an error response
-      return res.status(404).json({ message: "User not found" });
-    }
+
+    // Fetch UserID by Username
+    const UserID = await getUserIDByUsername(Username).catch((error) => {
+      console.error("Error fetching UserID:", error);
+      throw new Error("User not found");
+    });
 
     // Insert new goal into the database
     const query =
@@ -555,24 +554,29 @@ app.post("/api/addNewGoals", async (req, res) => {
     );
   } catch (error) {
     // Catch any unexpected errors
-    console.error("Error in adding goals :", error);
+    console.error("Error in adding goals:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
 app.get("/api/getPreviousGoals/:Username", async (req, res) => {
   const Username = req.params.Username;
-  const UserID = await getUserIDByUsername(Username.Username);
-  // console.log(UserID);
-  const query = "SELECT * FROM FinancialGoal WHERE UserID = ?";
-  connection.query(query, [UserID], (error, results) => {
-    if (error) {
-      console.error("Error fetching goals:", error);
-      res.status(500).json({ message: "Failed to fetch goals" });
-    } else {
-      res.status(200).json(results);
-    }
-  });
+  console.log(Username);
+  try {
+    const UserID = await getUserIDByUsername(Username);
+    const query = "SELECT * FROM FinancialGoal WHERE UserID = ?";
+    connection.query(query, [UserID], (error, results) => {
+      if (error) {
+        console.error("Error fetching goals:", error);
+        res.status(500).json({ message: "Failed to fetch goals" });
+      } else {
+        res.status(200).json(results);
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching UserID:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 app.post("/api/discardGoal/:goalID", async (req, res) => {
@@ -614,77 +618,6 @@ app.post("/api/completeGoal/:goalID", async (req, res) => {
 
 cron.schedule("0 0 * * *", updateGoalStatus);
 
-// prediction model
-
-// // expenseController.js
-// const { spawn } = require("child_process");
-
-// const fetchExpenseHistory = async () => {
-//   return new Promise((resolve, reject) => {
-//     try {
-//       // Query to fetch expense history from the database
-//       const query = `
-//         SELECT
-//           e.ExpenseID,
-//           e.ExpenseName,
-//           e.Amount,
-//           e.ExpenseDate,
-//           ec.CategoryName
-//         FROM Expense as e
-//         INNER JOIN ExpenseCategory as ec ON e.CategoryID = ec.CategoryID
-//         ORDER BY e.ExpenseDate DESC
-//       `;
-
-//       // Execute the query
-//       connection.query(query, (error, results) => {
-//         if (error) {
-//           console.error("Error fetching expense history:", error);
-//           reject(error); // Reject the Promise if there's an error
-//         } else {
-//           resolve(results); // Resolve the Promise with the fetched data
-//         }
-//       });
-//     } catch (error) {
-//       console.error("Error fetching expense history:", error);
-//       reject(error); // Reject the Promise if there's an error
-//     }
-//   });
-// };
-
-// const sendDataToModel = (data) => {
-//   const pythonProcess = spawn("python", ["./model/expense_model.py"]);
-
-//   pythonProcess.stdin.write(JSON.stringify(data));
-//   pythonProcess.stdin.end();
-
-//   pythonProcess.stdout.on("data", (data) => {
-//     console.log(`Model training output: ${data}`);
-//   });
-
-//   pythonProcess.stderr.on("data", (data) => {
-//     console.error(`Error running model training: ${data}`);
-//   });
-
-//   pythonProcess.on("close", (code) => {
-//     console.log(`Model training process exited with code ${code}`);
-//   });
-// };
-
-// const fun = async () => {
-//   try {
-//     console.log("Fetching expense history...");
-//     const historicalData = await fetchExpenseHistory(); // Wait for the data to be fetched
-//     console.log("Expense history:", historicalData);
-//     sendDataToModel(historicalData);
-//     console.log("here");
-//   } catch (error) {
-//     console.error("Error:", error);
-//   }
-// };
-
-// // Schedule the task to run every day
-// cron.schedule("0 * * * *", fun);
-
 app.post("/api/prediction_expense", (req, res) => {
   const { Username } = req.body;
   const sql = `
@@ -702,7 +635,7 @@ app.post("/api/prediction_expense", (req, res) => {
       res.status(500).json({ error: "Error fetching expenses" });
       return;
     }
-    console.log(results);
+    // console.log(results);
     res.json(results);
   });
 });
@@ -724,7 +657,7 @@ app.post("/api/prediction_income", (req, res) => {
       res.status(500).json({ error: "Error fetching incomes" });
       return;
     }
-    console.log(results);
+    // console.log(results);
     res.json(results);
   });
 });
