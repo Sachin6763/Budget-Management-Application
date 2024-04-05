@@ -128,12 +128,12 @@
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  background-color: #b2e10b;
-  color: #333;
+  background-color: #333;
+  color: white;
 }
 
 .anomaly-buttons button.active {
-  background-color: #333;
+  background-color: #b2e10b;
   color: #fff;
 }
 

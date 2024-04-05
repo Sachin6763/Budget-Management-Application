@@ -33,15 +33,35 @@ const Register = () => {
         Email: Email,
       }),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        //setToasterMessage(data.message); // Set toaster message based on API response
-        setShowToaster(true); // Show toaster
-        setToasterMessage("Register Successfully");
-        setTimeout(() => {
-          setShowToaster(false); // Hide toaster after 5 seconds
-          navigate("/login");
-        }, 2000);
+      .then((response) => {
+        if (response.status === 500) {
+          // If status is 500, display toaster message
+          setToasterMessage("Error registering user. Please try again later.");
+          setShowToaster(true); // Show toaster
+          setTimeout(() => {
+            setShowToaster(false); // Hide toaster after 5 seconds
+          }, 2000);
+        }
+        if (response.status === 400) {
+          // If status is 500, display toaster message
+          setToasterMessage("Name or Email is already taken.");
+          setShowToaster(true); // Show toaster
+          setTimeout(() => {
+            setShowToaster(false); // Hide toaster after 5 seconds
+          }, 2000);
+          return response.json();
+        }
+      })
+      .then((data, status) => {
+        if (status !== 500 && status != 400) {
+          // If status is not 500, registration is successful
+          setToasterMessage("Register Successfully");
+          setShowToaster(true); // Show toaster
+          setTimeout(() => {
+            setShowToaster(false); // Hide toaster after 5 seconds
+            navigate("/login");
+          }, 2000);
+        }
       })
       .catch((error) => {
         console.error("Error during registration:", error);

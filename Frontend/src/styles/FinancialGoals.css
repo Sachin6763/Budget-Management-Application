@@ -16,16 +16,27 @@
   padding: 10px 0px;
   margin: 0 10px;
   width: 200px;
-  background-color: #007bff;
-  font-size: 15px;
+  font-size: 20px;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.goal-buttons-container button:hover {
-  background-color: #0056b3;
+.goal-not-active {
+  background-color: black;
+}
+
+.goal-active {
+  background-color: greenyellow;
+}
+
+.goal-not-active:hover {
+  background-color: rgb(72, 70, 70);
+}
+
+.goal-active:hover {
+  background-color: gold;
 }
 
 /* GoalForm.css */
@@ -60,7 +71,8 @@
 .goal-form-container button {
   padding: 10px 30px;
   margin-top: 10px;
-  background-color: black;
+  background-color: rgb(78, 8, 219);
+  font-size: 18px;
   color: white;
   border: none;
   border-radius: 5px;

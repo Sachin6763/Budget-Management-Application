@@ -58,73 +58,103 @@ const updateGoalStatus = async () => {
 // Schedule the background task to run once a day at midnight
 cron.schedule("0 0 * * *", updateGoalStatus); // Runs every day at midnight
 
-app.post("/api/signup", (req, res) => {
+const bcrypt = require("bcrypt");
+
+app.post("/api/signup", async (req, res) => {
   const { UserID, Password, Email } = req.body;
   console.log(UserID, Password, Email);
-  // Check if the email is already registered
-  const emailCheckQuery = `SELECT * FROM user WHERE Email = ?`;
-  connection.query(emailCheckQuery, [Email], (emailError, emailResults) => {
-    if (emailError) {
-      console.error("Error checking email: " + emailError.stack);
-      res.status(500).json({ error: "Error checking email" });
-    } else if (emailResults.length > 0) {
-      // Email already exists, send an error response
-      res.status(400).json({ error: "Email is already taken" });
-    } else {
-      // Email is unique, check if the UserID is unique
-      const userIDCheckQuery = "SELECT * FROM user WHERE Username = ?";
-      connection.query(
-        userIDCheckQuery,
-        [UserID],
-        (userIDError, userIDResults) => {
-          if (userIDError) {
-            console.error("Error checking UserID: " + userIDError.stack);
-            res.status(500).json({ error: "Error checking UserID" });
-          } else if (userIDResults.length > 0) {
-            // UserID already exists, send an error response
-            res.status(400).json({ error: "Username is already taken" });
-          } else {
-            // UserID is also unique, proceed with registration
-            const insertQuery =
-              "INSERT INTO user (Username, Password, Email) VALUES (?, ?, ?)";
-            connection.query(
-              insertQuery,
-              [UserID, Password, Email],
-              (insertError, insertResults) => {
-                if (insertError) {
-                  console.error("Error executing query: " + insertError.stack);
-                  res.status(500).json({ error: "Error registering user" });
-                } else {
-                  res.json({ message: "User registered successfully" });
-                }
+
+  try {
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(Password, 10); // 10 is the salt rounds
+
+    // Check if the email is already registered
+    const emailCheckQuery = `SELECT * FROM user WHERE Email = ?`;
+    connection.query(
+      emailCheckQuery,
+      [Email],
+      async (emailError, emailResults) => {
+        if (emailError) {
+          console.error("Error checking email: " + emailError.stack);
+          res.status(500).json({ error: "Error checking email" });
+        } else if (emailResults.length > 0) {
+          // Email already exists, send an error response
+          res.status(400).json({ error: "Email is already taken" });
+        } else {
+          // Email is unique, check if the UserID is unique
+          const userIDCheckQuery = "SELECT * FROM user WHERE Username = ?";
+          connection.query(
+            userIDCheckQuery,
+            [UserID],
+            async (userIDError, userIDResults) => {
+              if (userIDError) {
+                console.error("Error checking UserID: " + userIDError.stack);
+                res.status(500).json({ error: "Error checking UserID" });
+              } else if (userIDResults.length > 0) {
+                // UserID already exists, send an error response
+                res.status(400).json({ error: "Username is already taken" });
+              } else {
+                // UserID is also unique, proceed with registration
+                const insertQuery =
+                  "INSERT INTO user (Username, Password, Email) VALUES (?, ?, ?)";
+                connection.query(
+                  insertQuery,
+                  [UserID, hashedPassword, Email],
+                  (insertError, insertResults) => {
+                    if (insertError) {
+                      console.error(
+                        "Error executing query: " + insertError.stack
+                      );
+                      res.status(500).json({ error: "Error registering user" });
+                    } else {
+                      res.json({ message: "User registered successfully" });
+                    }
+                  }
+                );
               }
-            );
-          }
+            }
+          );
         }
-      );
-    }
-  });
+      }
+    );
+  } catch (error) {
+    console.error("Error hashing password:", error);
+    res.status(500).json({ error: "Error hashing password" });
+  }
 });
 
-app.post("/api/login", (req, res) => {
+app.post("/api/login", async (req, res) => {
   const { userID, password } = req.body;
   console.log(userID, password); // Ensure you're receiving the correct values
 
-  const query = `SELECT * FROM user WHERE Username = ? AND password = ?`;
-  connection.query(query, [userID, password], (error, results) => {
-    if (error) {
-      console.error("Error executing query: " + error.stack);
-      res.status(500).json({ error: "Error logging in" });
-    } else {
-      if (results.length > 0) {
-        // User found, send a success response
-        res.json({ message: "Login successful" });
+  try {
+    const query = `SELECT * FROM user WHERE Username = ?`;
+    connection.query(query, [userID], async (error, results) => {
+      if (error) {
+        console.error("Error executing query: " + error.stack);
+        res.status(500).json({ error: "Error logging in" });
       } else {
-        // User not found, send an error response
-        res.status(401).json({ error: "Invalid username or password" });
+        if (results.length > 0) {
+          const user = results[0];
+          // Compare the provided password with the hashed password from the database
+          const match = await bcrypt.compare(password, user.Password);
+          if (match) {
+            // Passwords match, send a success response
+            res.json({ message: "Login successful" });
+          } else {
+            // Passwords do not match, send an error response
+            res.status(401).json({ error: "Invalid username or password" });
+          }
+        } else {
+          // User not found, send an error response
+          res.status(401).json({ error: "Invalid username or password" });
+        }
       }
-    }
-  });
+    });
+  } catch (error) {
+    console.error("Error comparing passwords:", error);
+    res.status(500).json({ error: "Error comparing passwords" });
+  }
 });
 
 const getUserIDByUsername = (username) => {
@@ -132,18 +162,16 @@ const getUserIDByUsername = (username) => {
     const getUserIDQuery = `SELECT UserID FROM User WHERE Username = ?`;
     connection.query(getUserIDQuery, [username], (error, results) => {
       if (error) {
+        // Handle the error by rejecting the promise with the error object
         console.error("Error getting UserID: " + error.stack);
-        reject("Error getting UserID");
+        reject(error);
       } else {
-        // console.log("here2", results);
         if (results.length > 0) {
-          // User found, send the UserID in response
           const UserID = results[0].UserID;
-          // console.log(UserID);
           resolve(UserID);
         } else {
-          // User not found, send an error response
-          reject("User not found");
+          // If no user found, reject the promise with a custom error message
+          reject(new Error("User not found"));
         }
       }
     });
@@ -330,23 +358,29 @@ app.post("/api/incomecategoryid", (req, res) => {
 
 app.post("/api/expenses_summary", async (req, res) => {
   try {
-    const { Username } = req.body;
+    const { Username, selectedMonth, selectedYear } = req.body;
     const userID = await getUserIDByUsername(Username);
-    // console.log(userID);
+    console.log(selectedMonth, "ethe", selectedYear);
+    const query = `SELECT CategoryName, SUM(Amount) AS TotalExpense 
+               FROM ExpenseCategory 
+               LEFT JOIN Expense ON Expense.CategoryID = ExpenseCategory.CategoryID 
+               WHERE Expense.UserID = ? 
+               AND MONTH(Expense.ExpenseDate) = ? 
+               AND YEAR(Expense.ExpenseDate) = ? 
+               GROUP BY Expense.CategoryID`;
 
-    const query = `SELECT CategoryName, SUM(Amount) AS TotalExpense FROM ExpenseCategory 
-                   LEFT JOIN Expense ON Expense.CategoryID = ExpenseCategory.CategoryID 
-                   WHERE Expense.UserID = ? 
-                   GROUP BY Expense.CategoryID`;
-
-    connection.query(query, [userID], (error, results) => {
-      if (error) {
-        console.error("Error fetching category expenses:", error);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
+    connection.query(
+      query,
+      [userID, selectedMonth, selectedYear],
+      (error, results) => {
+        if (error) {
+          console.error("Error fetching category expenses:", error);
+          res.status(500).json({ error: "Internal Server Error" });
+          return;
+        }
+        res.status(200).json(results);
       }
-      res.status(200).json(results);
-    });
+    );
   } catch (error) {
     console.error("Error fetching category expenses:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -355,23 +389,29 @@ app.post("/api/expenses_summary", async (req, res) => {
 
 app.post("/api/income_summary", async (req, res) => {
   try {
-    const { Username } = req.body;
+    const { Username, selectedMonth, selectedYear } = req.body;
     const userID = await getUserIDByUsername(Username);
     // console.log(userID);
 
     const query = `SELECT CategoryName, SUM(Amount) AS TotalIncome FROM IncomeCategory 
                    LEFT JOIN Income ON Income.CategoryID = IncomeCategory.CategoryID 
                    WHERE Income.UserID = ? 
+                   AND MONTH(Income.IncomeDate) = ? 
+                   AND YEAR(Income.IncomeDate) = ? 
                    GROUP BY Income.CategoryID`;
 
-    connection.query(query, [userID], (error, results) => {
-      if (error) {
-        console.error("Error fetching category expenses:", error);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
+    connection.query(
+      query,
+      [userID, selectedMonth, selectedYear],
+      (error, results) => {
+        if (error) {
+          console.error("Error fetching category expenses:", error);
+          res.status(500).json({ error: "Internal Server Error" });
+          return;
+        }
+        res.status(200).json(results);
       }
-      res.status(200).json(results);
-    });
+    );
   } catch (error) {
     console.error("Error fetching category expenses:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -489,24 +529,32 @@ app.post("/api/addNewGoals", async (req, res) => {
   console.log(req.body);
   try {
     const { Username, GoalName, TargetAmount, Deadline } = req.body;
+    console.log(Username.Username);
+
+    // Fetch UserID by Username
     const UserID = await getUserIDByUsername(Username.Username);
+    if (!UserID) {
+      // If UserID is not found, send an error response
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Insert new goal into the database
     const query =
       "INSERT INTO FinancialGoal (UserID, GoalName, TargetAmount, Deadline) VALUES (?, ?, ?, ?)";
-    // console.log(Username, GoalName, TargetAmount, Deadline, UserID);
     connection.query(
       query,
       [UserID, GoalName, TargetAmount, Deadline],
       (error, results) => {
         if (error) {
           console.error("Error adding goal:", error);
-          res.status(500).json({ message: "Failed to add goal" });
-        } else {
-          updateGoalStatus();
-          res.status(201).json({ message: "Goal added successfully" });
+          return res.status(500).json({ message: "Failed to add goal" });
         }
+        // If insertion is successful, send a success response
+        res.status(201).json({ message: "Goal added successfully" });
       }
     );
   } catch (error) {
+    // Catch any unexpected errors
     console.error("Error in adding goals :", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -514,7 +562,7 @@ app.post("/api/addNewGoals", async (req, res) => {
 
 app.get("/api/getPreviousGoals/:Username", async (req, res) => {
   const Username = req.params.Username;
-  const UserID = await getUserIDByUsername(Username);
+  const UserID = await getUserIDByUsername(Username.Username);
   // console.log(UserID);
   const query = "SELECT * FROM FinancialGoal WHERE UserID = ?";
   connection.query(query, [UserID], (error, results) => {

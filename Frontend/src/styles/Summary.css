@@ -5,6 +5,38 @@
   padding: 20px;
 }
 
+.summary-header {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
+.summary-header select {
+  padding: 8px 12px;
+  margin: 3px 10px;
+  font-size: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.summary-header select:hover {
+  background-color: greenyellow;
+}
+
+.summary-header select option {
+  font-size: 18px;
+  color: white;
+  background-color: rgb(33, 33, 208);
+}
+
+.summary-header select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #007bff;
+}
+
 /* Summary Left */
 .summary-left {
   display: flex;

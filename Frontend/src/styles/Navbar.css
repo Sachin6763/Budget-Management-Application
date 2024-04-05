@@ -62,7 +62,8 @@
 }
 
 .links a:focus,
-.links a.active {
+.links a.active,
+.nav-active {
   background-color: #555; /* Darker background color for active link */
   color: #fff; /* Text color for active link */
 }

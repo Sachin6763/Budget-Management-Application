@@ -5,13 +5,27 @@ import GoalForm from "./GoalForm";
 import GoalList from "./GoalList";
 import "../../styles/FinancialGoals.css";
 
-const FinancialGoals = (Username) => {
+const FinancialGoals = ({ Username, months, years }) => {
   const [goals, setGoals] = useState([]);
   const [showAddGoalForm, setShowAddGoalForm] = useState(false);
-
+  const date = new Date();
+  const [selectedMonth, setSelectedMonth] = useState(date.getMonth() + 1);
+  const [selectedYear, setSelectedYear] = useState(date.getFullYear());
   const [showToaster, setShowToaster] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
 
+  const handleMonthChange = (event) => {
+    console.log(event.target.value);
+    setSelectedMonth(event.target.value);
+    // await fetchCategoryExpenses();
+  };
+
+  // Function to handle change in year select
+  const handleYearChange = (event) => {
+    console.log("year" + event.target.value);
+    setSelectedYear(event.target.value);
+    // await fetchCategoryExpenses();
+  };
   const handleToaster = (message) => {
     setToasterMessage(message);
     setShowToaster(true);
@@ -39,7 +53,7 @@ const FinancialGoals = (Username) => {
   };
 
   const addGoal = async (newGoal) => {
-    // console.log(newGoal);
+    console.log(newGoal);
     try {
       await fetch("http://localhost:4000/api/addNewGoals", {
         method: "POST",
@@ -96,23 +110,53 @@ const FinancialGoals = (Username) => {
   };
 
   return (
-    <div className="goal-container">
-      <div className="goal-buttons-container">
-        <button onClick={() => setShowAddGoalForm(true)}>Add New Goal</button>
-        <button onClick={() => setShowAddGoalForm(false)}>
-          View Previous Goals
-        </button>
+    <div>
+      <div className="summary-header">
+        <select value={selectedMonth} onChange={handleMonthChange}>
+          {months.map((month) => (
+            <option key={month.value} value={month.value}>
+              {month.label}
+            </option>
+          ))}
+        </select>
+        <select value={selectedYear} onChange={handleYearChange}>
+          {years.map((year) => (
+            <option key={year.value} value={year.value}>
+              {year.label}
+            </option>
+          ))}
+        </select>
       </div>
-      {showAddGoalForm && <GoalForm addGoal={addGoal} Username={Username} />}
-      {!showAddGoalForm && (
-        <GoalList
-          goals={goals}
-          Username={Username}
-          handleDiscardGoal={handleDiscardGoal}
-          handleCompleteGoal={handleCompleteGoal}
-        />
-      )}
-      {showToaster && <div className="toaster">{toasterMessage}</div>}
+      <div className="goal-container">
+        <div className="goal-buttons-container">
+          <button
+            onClick={() => setShowAddGoalForm(true)}
+            className={
+              showAddGoalForm == true ? "goal-active" : "goal-not-active"
+            }
+          >
+            Add New Goal
+          </button>
+          <button
+            onClick={() => setShowAddGoalForm(false)}
+            className={
+              showAddGoalForm === false ? "goal-active" : "goal-not-active"
+            }
+          >
+            View Previous Goals
+          </button>
+        </div>
+        {showAddGoalForm && <GoalForm addGoal={addGoal} Username={Username} />}
+        {!showAddGoalForm && (
+          <GoalList
+            goals={goals}
+            Username={Username}
+            handleDiscardGoal={handleDiscardGoal}
+            handleCompleteGoal={handleCompleteGoal}
+          />
+        )}
+        {showToaster && <div className="toaster">{toasterMessage}</div>}
+      </div>
     </div>
   );
 };
