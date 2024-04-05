@@ -7,7 +7,7 @@ import financialGoalsImage from "../images/financial_goals.png";
 import predictiveAnalyticsImage from "../images/predictive_analysis.png";
 import reportImage from "../images/report.png";
 
-const HomePage = () => {
+const HomePage = ({ user }) => {
   return (
     <div className="home-container">
       <div className="home-content">
@@ -45,12 +45,16 @@ const HomePage = () => {
           </div>
         </div>
         <div className="cta-buttons">
-          <Link to="/login" className="auth-button">
-            Get Started
-          </Link>
-          <Link to="/expense_tracking" className="finance-button">
-            Explore Features
-          </Link>
+          {!user && (
+            <Link to="/login" className="auth-button">
+              Get Started
+            </Link>
+          )}
+          {user && (
+            <Link to="/expense_tracking" className="finance-button">
+              Explore Features
+            </Link>
+          )}
         </div>
       </div>
     </div>

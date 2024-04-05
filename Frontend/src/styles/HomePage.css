@@ -206,12 +206,18 @@
 }
 
 .home-content p,
-.cta-buttons {
+.cta-buttons,
+.summary-container,
+.goal-container,
+.summary-header,
+#income-form-container,
+.prediction {
   animation: fadeIn 1s ease-in-out; /* Fade in animation for content */
 }
 
-.image-box {
-  animation: fadeIn 1s ease-in-out; /* Fade in animation for image boxes */
+.image-box,
+.summary-right {
+  animation: fadeIn 2s ease-in-out; /* Fade in animation for image boxes */
 }
 
 /* Adjustments for smaller screens */

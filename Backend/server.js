@@ -227,7 +227,7 @@ const getIncomeCategoryIDByCategoryName = (CategoryName) => {
 // Handle adding an expense
 app.post("/api/addExpense", (req, res) => {
   const { username, expensename, amount, date, category } = req.body;
-
+  // console.log(req.body);
   // Get UserID by username
   getUserIDByUsername(username)
     .then((UserID) => {
@@ -549,6 +549,7 @@ app.post("/api/addNewGoals", async (req, res) => {
           return res.status(500).json({ message: "Failed to add goal" });
         }
         // If insertion is successful, send a success response
+        updateGoalStatus();
         res.status(201).json({ message: "Goal added successfully" });
       }
     );
@@ -559,25 +560,33 @@ app.post("/api/addNewGoals", async (req, res) => {
   }
 });
 
-app.get("/api/getPreviousGoals/:Username", async (req, res) => {
-  const Username = req.params.Username;
-  console.log(Username);
-  try {
-    const UserID = await getUserIDByUsername(Username);
-    const query = "SELECT * FROM FinancialGoal WHERE UserID = ?";
-    connection.query(query, [UserID], (error, results) => {
-      if (error) {
-        console.error("Error fetching goals:", error);
-        res.status(500).json({ message: "Failed to fetch goals" });
-      } else {
-        res.status(200).json(results);
-      }
-    });
-  } catch (error) {
-    console.error("Error fetching UserID:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+app.get(
+  "/api/getPreviousGoals/:Username/:selectedMonth/:selectedYear",
+  async (req, res) => {
+    const { Username, selectedMonth, selectedYear } = req.params;
+    // console.log(selectedMonth, selectedYear);
+    try {
+      const UserID = await getUserIDByUsername(Username);
+      // console.log(UserID);
+      const query = `SELECT * FROM FinancialGoal WHERE UserID = ? AND YEAR(Deadline) = ? AND MONTH(Deadline) = ?`;
+      connection.query(
+        query,
+        [UserID, selectedYear, selectedMonth],
+        (error, results) => {
+          if (error) {
+            console.error("Error fetching goals:", error);
+            res.status(500).json({ message: "Failed to fetch goals" });
+          } else {
+            res.status(200).json(results);
+          }
+        }
+      );
+    } catch (error) {
+      console.error("Error fetching UserID:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
   }
-});
+);
 
 app.post("/api/discardGoal/:goalID", async (req, res) => {
   const goalID = req.params.goalID;

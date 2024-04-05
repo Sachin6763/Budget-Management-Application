@@ -49,7 +49,7 @@ const GoalList = ({
                 {goal.Status !== "Completed" && (
                   <button
                     className="goal-button-complete"
-                    onClick={() => handleCompleteGoal(goal.GoalID)}
+                    onClick={() => handleCompleteGoal(goal)}
                   >
                     Complete
                   </button>

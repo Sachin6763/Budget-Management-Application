@@ -7,6 +7,7 @@ import "../../styles/FinancialGoals.css";
 
 const FinancialGoals = ({ Username, months, years }) => {
   const [goals, setGoals] = useState([]);
+  const [goalCategoryID, setGoalCategoryID] = useState(19);
   const [showAddGoalForm, setShowAddGoalForm] = useState(false);
   const date = new Date();
   const [selectedMonth, setSelectedMonth] = useState(date.getMonth() + 1);
@@ -37,12 +38,19 @@ const FinancialGoals = ({ Username, months, years }) => {
   useEffect(() => {
     fetchGoals();
   }, []);
+  useEffect(
+    () => {
+      fetchGoals();
+    },
+    [selectedMonth],
+    [selectedYear]
+  );
 
   const fetchGoals = async () => {
     console.log(Username.Username);
     try {
       const response = await fetch(
-        `http://localhost:4000/api/getPreviousGoals/${Username.Username}`
+        `http://localhost:4000/api/getPreviousGoals/${Username}/${selectedMonth}/${selectedYear}`
       );
       const data = await response.json();
       // console.log("success in getting goals");
@@ -90,10 +98,41 @@ const FinancialGoals = ({ Username, months, years }) => {
     }
   };
 
-  const handleCompleteGoal = async (goalID) => {
+  const handleAddExpense = async (ExpenseName, Amount, ExpenseDate) => {
+    try {
+      console.log(ExpenseName, Amount, ExpenseDate);
+      const response = await fetch("http://localhost:4000/api/addExpense", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: Username,
+          expensename: ExpenseName,
+          amount: Amount,
+          date: ExpenseDate,
+          category: goalCategoryID,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setToasterMessage("Goal Added to Expense !");
+        setShowToaster(true);
+        setTimeout(() => {
+          setShowToaster(false);
+        }, 2000);
+      }
+    } catch (error) {
+      console.error("Error adding expense:", error);
+    }
+  };
+
+  const handleCompleteGoal = async (goal) => {
     try {
       const response = await fetch(
-        `http://localhost:4000/api/completeGoal/${goalID}`,
+        `http://localhost:4000/api/completeGoal/${goal.GoalID}`,
         {
           method: "POST",
         }
@@ -102,7 +141,12 @@ const FinancialGoals = ({ Username, months, years }) => {
       if (!response.ok) {
         console.error("Failed to complete goal.");
       } else {
-        fetchGoals();
+        await handleAddExpense(
+          goal.GoalName,
+          goal.TargetAmount,
+          goal.Deadline.substring(0, 10)
+        );
+        await fetchGoals();
       }
     } catch (error) {
       console.error("Error completing goal:", error);

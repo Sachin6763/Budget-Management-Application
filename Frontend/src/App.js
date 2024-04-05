@@ -69,26 +69,40 @@ export default function App() {
           <Route path="/home" element={<Home user={user} />} />
           <Route path="/login" element={<Login loggedIn={loggedIn} />} />
           <Route path="/register" element={<Register />} />
-          <Route
-            path="/expense_tracking"
-            element={<AddTransactionForm Username={user} />}
-          />
-          <Route
-            path="/income_tracking"
-            element={<AddIncomeForm Username={user} />}
-          />
-          <Route
-            path="/summary"
-            element={<Summary Username={user} months={months} years={years} />}
-          />
-          <Route
-            path="/financial_goals"
-            element={
-              <FinancialGoals Username={user} months={months} years={years} />
-            }
-          />
-          <Route path="/prediction" element={<Prediction Username={user} />} />
-          {/* <Route path="/payment" element={<Payment />} /> */}
+          {user && (
+            <Route
+              path="/expense_tracking"
+              element={<AddTransactionForm Username={user} />}
+            />
+          )}
+          {user && (
+            <Route
+              path="/income_tracking"
+              element={<AddIncomeForm Username={user} />}
+            />
+          )}
+          {user && (
+            <Route
+              path="/summary"
+              element={
+                <Summary Username={user} months={months} years={years} />
+              }
+            />
+          )}
+          {user && (
+            <Route
+              path="/financial_goals"
+              element={
+                <FinancialGoals Username={user} months={months} years={years} />
+              }
+            />
+          )}
+          {user && (
+            <Route
+              path="/prediction"
+              element={<Prediction Username={user} />}
+            />
+          )}
         </Routes>
       </div>
       {/* <InteractiveBackground /> */}
