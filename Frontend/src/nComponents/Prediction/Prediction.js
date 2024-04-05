@@ -81,10 +81,10 @@ function Prediction({ Username }) {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setIncomes(data);
       })
       .catch((error) => console.error("Error fetching incomes:", error));
-    console.log(incomes);
   }, []);
 
   useEffect(() => {
@@ -168,10 +168,13 @@ function Prediction({ Username }) {
       </div>
       <div className="content">
         {activeComponent === "prediction-expense" && (
-          <ExpenseTrendAnalysis nextDayExpense={nextDayExpense} />
+          <ExpenseTrendAnalysis
+            nextDayExpense={nextDayExpense}
+            expense={expenses}
+          />
         )}
         {activeComponent === "prediction-income" && (
-          <IncomeForecasting nextDayIncome={nextDayIncome} />
+          <IncomeForecasting nextDayIncome={nextDayIncome} income={incomes} />
         )}
         {/* {activeComponent === "prediction-savings" && (
           <SavingGoalProjections Username={Username} />

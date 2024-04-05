@@ -53,14 +53,23 @@
 
 /* ExpenseTrendAnalysis.css */
 
+.expense-trend-analysis-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .expense-trend-analysis-container h2,
 .anomaly-detection-container h2 {
-  background-color: #f8f9fa; /* Light gray background */
-  border-radius: 8px; /* Rounded corners */
+  width: 350px;
+  background-color: #0974de;
+  border-radius: 8px;
   margin: 5px;
-  padding: 20px; /* Add some padding */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  text-align: center; /* Center the content */
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  animation: bounceScale 2s infinite alternate linear, colorChange 3s infinite;
 }
 
 .expense-amount {

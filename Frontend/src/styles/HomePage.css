@@ -211,7 +211,10 @@
 .goal-container,
 .summary-header,
 #income-form-container,
-.prediction {
+.prediction,
+.content,
+.scatter-plot,
+.anomaly-component {
   animation: fadeIn 1s ease-in-out; /* Fade in animation for content */
 }
 
