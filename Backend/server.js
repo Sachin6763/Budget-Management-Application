@@ -3,10 +3,7 @@ const mysql = require("mysql2");
 const path = require("path");
 const cors = require("cors");
 const cron = require("node-cron");
-const { get } = require("https");
-
-// const bodyParser = require("body-parser");
-// app.use(bodyParser.json());
+// const { get } = require("https");
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -24,8 +21,8 @@ connection.connect((err) => {
 });
 
 const app = express();
-app.use(cors()); // Enable CORS for all routes
-app.use(express.json()); // Parse JSON request bodies
+app.use(cors());
+app.use(express.json());
 
 // Serve static files from the root public folder of your React app
 app.use(express.static(path.join(__dirname, "../Frontend/public")));
@@ -56,8 +53,7 @@ const updateGoalStatus = async () => {
 };
 
 // Schedule the background task to run once a day at midnight
-cron.schedule("0 0 * * *", updateGoalStatus); // Runs every day at midnight
-
+cron.schedule("0 0 * * *", updateGoalStatus);
 const bcrypt = require("bcrypt");
 
 app.post("/api/signup", async (req, res) => {
@@ -125,7 +121,7 @@ app.post("/api/signup", async (req, res) => {
 
 app.post("/api/login", async (req, res) => {
   const { userID, password } = req.body;
-  // console.log(userID, password); // Ensure you're receiving the correct values
+  // console.log(userID, password);
 
   try {
     const query = `SELECT * FROM user WHERE Username = ?`;
@@ -186,11 +182,9 @@ const getExpenseCategoryIDByCategoryName = (CategoryName) => {
         console.error("Error getting CategoryID: " + error.stack);
         reject("Error getting CategoryID");
       } else {
-        // console.log("here2", results);
         if (results.length > 0) {
           // User found, send the CategoryID in response
           const CategoryID = results[0].CategoryID;
-          // console.log(CategoryID);
           resolve(CategoryID);
         } else {
           // User not found, send an error response
@@ -209,7 +203,6 @@ const getIncomeCategoryIDByCategoryName = (CategoryName) => {
         console.error("Error getting CategoryID: " + error.stack);
         reject("Error getting CategoryID");
       } else {
-        // console.log("here2", results);
         if (results.length > 0) {
           // User found, send the CategoryID in response
           const CategoryID = results[0].CategoryID;
@@ -225,6 +218,7 @@ const getIncomeCategoryIDByCategoryName = (CategoryName) => {
 };
 
 // Handle adding an expense
+
 app.post("/api/addExpense", (req, res) => {
   const { username, expensename, amount, date, category } = req.body;
   // console.log(req.body);
@@ -252,6 +246,7 @@ app.post("/api/addExpense", (req, res) => {
     });
 });
 
+// Adding income to income table
 app.post("/api/addIncome", (req, res) => {
   const { Username, name, amount, date, category } = req.body;
   // console.log(req.body);
@@ -281,8 +276,8 @@ app.post("/api/addIncome", (req, res) => {
 });
 
 // Handle fetching all category names
+
 app.get("/api/expensecategories", (req, res) => {
-  // Query to retrieve all category names
   const query = "SELECT CategoryName FROM ExpenseCategory";
 
   connection.query(query, (error, results) => {
@@ -290,16 +285,16 @@ app.get("/api/expensecategories", (req, res) => {
       console.error("Error fetching categories: " + error.stack);
       res.status(500).json({ error: "Error fetching categories" });
     } else {
-      // Extract category names from the query results
       const categories = results.map((result) => result.CategoryName);
-      res.json(categories); // Send the category names in the response
+      res.json(categories);
     }
   });
 });
 
 // Getting categoryID
+
 app.post("/api/expensecategoryid", (req, res) => {
-  const { categoryName } = req.body; // Extract category name from request body
+  const { categoryName } = req.body;
   // Query to retrieve category ID based on category name
   const query = "SELECT CategoryID FROM ExpenseCategory WHERE CategoryName = ?";
 
@@ -310,7 +305,7 @@ app.post("/api/expensecategoryid", (req, res) => {
     } else {
       if (results.length > 0) {
         const categoryId = results[0].CategoryID;
-        res.json({ categoryId }); // Send the category ID in the response
+        res.json({ categoryId });
       } else {
         res.status(404).json({ error: "Category not found" });
       }
@@ -330,15 +325,14 @@ app.get("/api/incomecategories", (req, res) => {
     } else {
       // Extract category names from the query results
       const categories = results.map((result) => result.CategoryName);
-      res.json(categories); // Send the category names in the response
+      res.json(categories);
     }
   });
 });
 
 // Getting categoryID for income
 app.post("/api/incomecategoryid", (req, res) => {
-  const { categoryName } = req.body; // Extract category name from request body
-  // Query to retrieve category ID based on category name
+  const { categoryName } = req.body;
   const query = "SELECT CategoryID FROM IncomeCategory WHERE CategoryName = ?";
 
   connection.query(query, [categoryName], (error, results) => {
@@ -348,7 +342,7 @@ app.post("/api/incomecategoryid", (req, res) => {
     } else {
       if (results.length > 0) {
         const categoryId = results[0].CategoryID;
-        res.json({ categoryId }); // Send the category ID in the response
+        res.json({ categoryId });
       } else {
         res.status(404).json({ error: "Category not found" });
       }
@@ -392,7 +386,6 @@ app.post("/api/income_summary", async (req, res) => {
     const { Username, selectedMonth, selectedYear } = req.body;
     const userID = await getUserIDByUsername(Username);
     // console.log(userID);
-
     const query = `SELECT CategoryName, SUM(Amount) AS TotalIncome FROM IncomeCategory 
                    LEFT JOIN Income ON Income.CategoryID = IncomeCategory.CategoryID 
                    WHERE Income.UserID = ? 
@@ -418,12 +411,10 @@ app.post("/api/income_summary", async (req, res) => {
   }
 });
 
-// Assuming you're using Express
+// Adding New Income Category
+
 app.post("/api/addIncomeCategory", async (req, res) => {
   const { categoryName } = req.body;
-
-  // Your code to insert the new category into the database
-  // Example:
   const query = "INSERT INTO IncomeCategory (CategoryName) VALUES (?)";
   connection.query(query, [categoryName], (error, results) => {
     if (error) {
@@ -435,11 +426,9 @@ app.post("/api/addIncomeCategory", async (req, res) => {
   });
 });
 
+// Adding New Expense Category
 app.post("/api/addExpenseCategory", async (req, res) => {
   const { categoryName } = req.body;
-
-  // Your code to insert the new category into the database
-  // Example:
   const query = "INSERT INTO ExpenseCategory (CategoryName) VALUES (?)";
   connection.query(query, [categoryName], (error, results) => {
     if (error) {
@@ -451,7 +440,8 @@ app.post("/api/addExpenseCategory", async (req, res) => {
   });
 });
 
-// Endpoint to remove an expense item by ID
+// Removing Expense Item from Expense
+
 app.post("/api/expenses/removeexpenseitem", async (req, res) => {
   try {
     const { expenseCategoryName, Username } = req.body;
@@ -460,14 +450,8 @@ app.post("/api/expenses/removeexpenseitem", async (req, res) => {
     const expenseCategoryId = await getExpenseCategoryIDByCategoryName(
       expenseCategoryName
     );
-    // console.log(UserId, expenseCategoryId);
-
-    // console.log("here");
-
-    // Query to delete the expense item from the database
     const deleteQuery =
       "DELETE FROM Expense WHERE CategoryID=? and UserID=? ; ";
-    // Execute the delete query
     connection.query(
       deleteQuery,
       [expenseCategoryId, UserId],
@@ -486,7 +470,7 @@ app.post("/api/expenses/removeexpenseitem", async (req, res) => {
   }
 });
 
-// Endpoint to remove an income item by ID
+// Removing Item from Incomes
 
 app.post("/api/incomes/removeincomeitem", async (req, res) => {
   try {
@@ -496,13 +480,7 @@ app.post("/api/incomes/removeincomeitem", async (req, res) => {
     const incomeCategoryId = await getIncomeCategoryIDByCategoryName(
       incomeCategoryName
     );
-    // console.log(UserId, incomeCategoryId);
-
-    // console.log("here");
-
-    // Query to delete the expense item from the database
     const deleteQuery = "DELETE FROM Income WHERE CategoryID=? and UserID=? ; ";
-    // Execute the delete query
     connection.query(
       deleteQuery,
       [incomeCategoryId, UserId],
@@ -521,22 +499,17 @@ app.post("/api/incomes/removeincomeitem", async (req, res) => {
   }
 });
 
-// Goals
+//  -- <> -- Financial Goals  -- <> --
 
-// server.js
+// Add New Financial Goal
 
 app.post("/api/addNewGoals", async (req, res) => {
   try {
     const { Username, GoalName, TargetAmount, Deadline } = req.body;
-
-    // Fetch UserID by Username
-
-    // Fetch UserID by Username
     const UserID = await getUserIDByUsername(Username).catch((error) => {
       console.error("Error fetching UserID:", error);
       throw new Error("User not found");
     });
-
     // Insert new goal into the database
     const query =
       "INSERT INTO FinancialGoal (UserID, GoalName, TargetAmount, Deadline) VALUES (?, ?, ?, ?)";
@@ -559,6 +532,8 @@ app.post("/api/addNewGoals", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+// Getting Previous Financial Goal depending on Month and Year
 
 app.get(
   "/api/getPreviousGoals/:Username/:selectedMonth/:selectedYear",
@@ -588,6 +563,8 @@ app.get(
   }
 );
 
+// Discard the Financial Goal
+
 app.post("/api/discardGoal/:goalID", async (req, res) => {
   const goalID = req.params.goalID;
   try {
@@ -605,6 +582,8 @@ app.post("/api/discardGoal/:goalID", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
+// Change Status to "Complete" of the Financial Goal
 
 app.post("/api/completeGoal/:goalID", async (req, res) => {
   const goalID = req.params.goalID;
@@ -625,7 +604,10 @@ app.post("/api/completeGoal/:goalID", async (req, res) => {
   }
 });
 
+// Daywise Scheduler which update the Status of the goal every day
 cron.schedule("0 0 * * *", updateGoalStatus);
+
+// Getting Expenses and Predict the behaviour
 
 app.post("/api/prediction_expense", (req, res) => {
   const { Username } = req.body;
@@ -644,10 +626,11 @@ app.post("/api/prediction_expense", (req, res) => {
       res.status(500).json({ error: "Error fetching expenses" });
       return;
     }
-    // console.log(results);
     res.json(results);
   });
 });
+
+// Getting Incomes to predict the behaviour
 
 app.post("/api/prediction_income", (req, res) => {
   const { Username } = req.body;
@@ -666,12 +649,13 @@ app.post("/api/prediction_income", (req, res) => {
       res.status(500).json({ error: "Error fetching incomes" });
       return;
     }
-    // console.log(results);
     res.json(results);
   });
 });
 
-// Anamolies
+// Anamolies Detection
+
+// Getting Expense Anamolies depending on threshould which is 1.5
 
 app.get("/api/expense_anomalies", async (req, res) => {
   try {
@@ -707,7 +691,7 @@ app.get("/api/expense_anomalies", async (req, res) => {
   }
 });
 
-// income- anamolies
+// Getting Income Anamolies depending on threshould which is 1.5
 
 app.get("/api/income_anomalies", async (req, res) => {
   try {
@@ -744,6 +728,8 @@ app.get("/api/income_anomalies", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 4000;
+
+//  Listening on port 4000
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

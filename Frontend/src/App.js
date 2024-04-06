@@ -7,23 +7,17 @@ import { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 
-import Navbar from "./nComponents/Navbar";
-import Login from "./nComponents/Login";
-import Home from "./nComponents/Home";
-import Register from "./nComponents/Register";
-import AddTransactionForm from "./nComponents/ExpenseTracking";
-import AddIncomeForm from "./nComponents/IncomeTracking";
-import Summary from "./nComponents/Summary";
-import FinancialGoals from "./nComponents/FinancialGoal/FinancialGoals";
-import Prediction from "./nComponents/Prediction/Prediction";
-// import Order from "./Components/Order";
-// import Cart from "./Components/Cart";
-
-// import Payment from "./Components/Payment";
-// import PaymentForm from "./Components/PaymentForm";
+import Navbar from "./Components/Navbar";
+import Login from "./Components/Authentication/Login";
+import Home from "./Components/Home";
+import Register from "./Components/Authentication/Register";
+import AddTransactionForm from "./Components/ExpenseAndIncomeTracking/ExpenseTracking";
+import AddIncomeForm from "./Components/ExpenseAndIncomeTracking/IncomeTracking";
+import Summary from "./Components/Summary/Summary";
+import FinancialGoals from "./Components/FinancialGoal/FinancialGoals";
+import Prediction from "./Components/Prediction/Prediction";
 
 export default function App() {
-  // const navigate = useNavigate();
   const [user, setUser] = useState(() => {
     // Retrieve user information from sessionStorage during initial state setup
     const storedUser = sessionStorage.getItem("user");
@@ -105,7 +99,6 @@ export default function App() {
           )}
         </Routes>
       </div>
-      {/* <InteractiveBackground /> */}
     </Router>
   );
 }

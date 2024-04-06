@@ -3,14 +3,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(
-    100vh - 80px
-  ); /* Set height to viewport height for full-screen */
+  height: calc(100vh - 80px);
 }
 
 .home-content {
   text-align: center;
-  max-width: 90%; /* Adjust as needed */
+  max-width: 90%;
 }
 
 .image-grid {
@@ -22,8 +20,8 @@
 
 .image-box {
   margin: 20px;
-  width: 300px; /* Set width for image boxes */
-  height: 200px; /* Set height for image boxes */
+  width: 300px;
+  height: 200px;
   position: relative;
   overflow: hidden;
   border-radius: 10px;
@@ -32,17 +30,17 @@
 }
 
 .image-box:hover {
-  transform: scale(1.05); /* Scale up image on hover */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .image-box img {
-  width: 100%; /* Ensure images take full width of their container */
+  width: 100%;
   height: auto;
   height: 100%;
   transition: transform 0.3s ease;
-  object-fit: cover; /* Ensure the image fits into the box */
-  border-radius: 10px; /* Rounded corners for images */
+  object-fit: cover;
+  border-radius: 10px;
 }
 
 .image-overlay {
@@ -51,38 +49,37 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0; /* Initially hidden */
+  opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 .image-box:hover .image-overlay {
-  opacity: 1; /* Show overlay on hover */
+  opacity: 1;
 }
 
 .image-overlay p {
   color: #fff;
-  font-size: 20px; /* Larger font size for overlay text */
-  margin: 0; /* Remove margin to center text */
+  font-size: 20px;
+  margin: 0;
 }
 
 .cta-buttons {
-  margin-top: 40px; /* Increased margin between images and buttons */
+  margin-top: 40px;
 }
 
 /* Styles for text and buttons */
 
 .home-content {
   color: white;
-  font-size: 24px; /* Adjust font size as needed */
-  font-family: Arial, sans-serif; /* Choose a suitable font family */
-  line-height: 1.5; /* Adjust line height for readability */
-  text-align: center; /* Center-align text */
-  padding: 20px; /* Add padding for spacing */
-  /* Add any other desired styles */
+  font-size: 24px;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+  text-align: center;
+  padding: 20px;
 }
 
 .home-content h1 {
@@ -180,8 +177,8 @@
 .cta-buttons .finance-button {
   padding: 12px 24px;
   margin: 0 10px;
-  background-color: #007bff; /* Button background color */
-  color: #fff; /* Button text color */
+  background-color: #007bff;
+  color: #fff;
   border: none;
   border-radius: 5px;
   font-size: 16px;
@@ -192,7 +189,7 @@
 
 .cta-buttons .auth-button:hover,
 .cta-buttons .finance-button:hover {
-  background-color: #0056b3; /* Darker background color on hover */
+  background-color: #0056b3;
 }
 
 /* Animations */
@@ -215,23 +212,23 @@
 .content,
 .scatter-plot,
 .anomaly-component {
-  animation: fadeIn 1s ease-in-out; /* Fade in animation for content */
+  animation: fadeIn 1s ease-in-out;
 }
 
 .image-box,
 .summary-right {
-  animation: fadeIn 2s ease-in-out; /* Fade in animation for image boxes */
+  animation: fadeIn 2s ease-in-out;
 }
 
 /* Adjustments for smaller screens */
 @media screen and (max-width: 768px) {
   .image-box {
-    width: calc(50% - 40px); /* Two images per row with reduced margin */
+    width: calc(50% - 40px);
   }
 }
 
 @media screen and (max-width: 480px) {
   .image-box {
-    width: calc(100% - 40px); /* Single image per row with reduced margin */
+    width: calc(100% - 40px);
   }
 }

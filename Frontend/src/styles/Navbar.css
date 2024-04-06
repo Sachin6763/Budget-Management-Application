@@ -1,6 +1,6 @@
 .navbar {
-  background-color: #333; /* Dark background color */
-  color: #fff; /* Text color */
+  background-color: #333;
+  color: #fff;
   display: flex;
   height: 60px;
   justify-content: space-between;
@@ -10,19 +10,19 @@
 
 .brand-link {
   text-decoration: none;
-  color: #fff; /* Brand text color */
+  color: #fff;
   font-size: 24px;
 }
 
 .brand-link {
   text-decoration: none;
-  color: #fff; /* Brand text color */
+  color: #fff;
   font-size: 24px;
-  transition: transform 0.3s; /* Animation transition */
+  transition: transform 0.3s;
 }
 
 .brand-link:hover {
-  transform: scale(1.1); /* Scale up the text on hover */
+  transform: scale(1.1);
 }
 
 .links {
@@ -33,13 +33,13 @@
   padding: 10px;
   border-radius: 10px;
   text-decoration: none;
-  color: #fff; /* Link text color */
-  margin-right: 20px; /* Separate each button by 20px */
-  transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+  color: #fff;
+  margin-right: 20px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .links a:hover {
-  background-color: #555; /* Darker background color on hover */
+  background-color: #555;
 }
 
 .user-icon {
@@ -52,24 +52,31 @@
   position: absolute;
   top: 30px;
   right: 0;
-  background-color: #333;
-  color: #fff; /* Dropdown text color */
+  background-color: greenyellow;
+  color: #fff;
   padding: 10px;
   margin: 5px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  display: none; /* Hide the dropdown by default */
+  display: none;
+}
+.dropdown:hover {
+  display: block;
 }
 
 .links a:focus,
 .links a.active,
 .nav-active {
-  background-color: #555; /* Darker background color for active link */
-  color: #fff; /* Text color for active link */
+  background-color: #555;
+  color: #fff;
+}
+
+nav ul li a.active {
+  color: blue; /* Active link color */
 }
 
 .user-icon:hover .dropdown {
-  display: block; /* Show the dropdown on hover */
+  display: block;
 }
 
 .dropdown span {
@@ -83,8 +90,10 @@
 }
 
 .dropdown span:hover {
-  color: black; /* Link text color on hover */
-  background-color: wheat;
+  color: black;
+  background-color: blue;
+  border-radius: 5px;
+  padding: 2px;
 }
 
 .dropdown span:hover .dropdown {

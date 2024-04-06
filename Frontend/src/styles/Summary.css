@@ -1,4 +1,5 @@
 /* Summary Container */
+
 .summary-container {
   display: flex;
   justify-content: space-between;
@@ -37,11 +38,10 @@
   box-shadow: 0 0 0 2px #007bff;
 }
 
-/* Summary Left */
 .summary-left {
   display: flex;
   flex-direction: column;
-  max-width: 45%; /* Adjusted width */
+  max-width: 45%;
 }
 
 /* Category-wise Expenses Container */
@@ -52,18 +52,15 @@
   border-radius: 20px;
   padding: 10px;
   margin: 20px;
-  /* box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); */
-  /* margin-bottom: 20px; */
+  /* box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1); */
 }
 
-/* Summary Right */
 .summary-right {
-  min-width: 70%; /* Adjusted width */
+  min-width: 70%;
 }
 
 /* Graph Container */
 .graph-container {
-  /* background-color: #901616; */
   border-radius: 20px;
   padding: 30px;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
@@ -72,12 +69,10 @@
 .graph-row {
   display: flex;
   justify-content: space-around;
-  /* background-color: yellow; */
 }
 
 .graph-item1,
 .graph-item2 {
-  /* background-color: blue; */
   margin: 1px;
   border: 2px solid white;
   border-radius: 10px;
@@ -93,29 +88,23 @@
     flex-direction: column;
   }
 
-  /* .summary-left,
   .summary-right {
-    width: 100%;
-  } */
-
-  .summary-right {
-    margin-top: 20px; /* Add some space between the two sections on smaller screens */
+    margin-top: 20px;
   }
 }
 
-/* Button style */
 .remove-button {
   margin: 5px;
   padding: 2px;
-  background-color: #1811e1; /* Red color */
+  background-color: #1811e1;
   color: white;
   border: none;
   border-radius: 20px;
-  width: 35px; /* Adjust width as needed */
-  height: 25px; /* Adjust height as needed */
+  width: 35px;
+  height: 25px;
   font-size: 20px;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Smooth transition on hover */
+  transition: background-color 0.3s ease;
 }
 
 .remove-button:hover {
@@ -124,9 +113,9 @@
 }
 
 .remove-button:focus {
-  outline: none; /* Removes focus outline */
+  outline: none;
 }
 
 .remove-button:active {
-  transform: scale(0.95); /* Slightly scales down the button when clicked */
+  transform: scale(0.95);
 }

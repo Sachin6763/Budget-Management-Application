@@ -5,7 +5,6 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Styles for the chart title */
 .pie-chart-container h3 {
   font-size: 24px;
   color: #140101;
@@ -13,7 +12,6 @@
   text-align: center;
 }
 
-/* Styles for the legend */
 .recharts-legend-wrapper {
   text-align: center;
 }
@@ -27,7 +25,6 @@
   margin-right: 0;
 }
 
-/* Styles for the legend color indicators */
 .recharts-legend-item .recharts-surface {
   width: 12px;
   height: 12px;
@@ -35,13 +32,11 @@
   margin-right: 5px;
 }
 
-/* Styles for the legend labels */
 .recharts-legend-item-text {
   font-size: 14px;
   color: #666666;
 }
 
-/* Styles for the tooltip */
 .recharts-tooltip {
   background-color: rgba(255, 255, 255, 0.9);
   border: 1px solid #cccccc;
@@ -50,13 +45,11 @@
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Styles for the tooltip label */
 .recharts-tooltip-label {
   color: #e1d2d2;
   font-size: 14px;
 }
 
-/* Styles for the tooltip value */
 .recharts-tooltip-item-value {
   color: #ded8d8;
   font-size: 14px;
