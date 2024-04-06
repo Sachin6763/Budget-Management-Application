@@ -25,27 +25,62 @@ Managing personal finances can be challenging, especially without proper tools a
 - **Predictive Analytics**: Predict future expenses based on spending patterns.
 - **Budget Reports and Forecasts**: Generate detailed reports and forecasts for better planning.
 - **Data Encryption and Security**: Ensures user data privacy and security through encryption and secure storage.
-- **Privacy Enhancement**: Implements measures to enhance user privacy and data protection.
 
 ## Technologies Used
 
-- **Frontend**: React.js, React Router, Material-UI
-- **Backend**: Node.js, Express.js, SQL (replace with your preferred SQL database)
-- **Database**: SQL (replace with your preferred SQL database)
-- **Authentication**: JSON Web Tokens (JWT)
-- **Predictive Analytics**: (Include any libraries or tools used for predictive analytics)
-- **Deployment**: (Include any deployment platforms or services used)
+- **Frontend**: React.js
+- **Backend**: Node.js, Express.js
+- **Database**: SQL
+- **Plotting** : Pyplot
 
 ## Installation
 
 1. Clone the repository: `git clone <repository-url>`
 2. Navigate to the project directory: `cd budget-management-app`
-3. Install dependencies: `npm install`
+
+3. **Frontend Installation:**
+
+- **Navigate to the frontend directory:**
+  ```
+  cd frontend
+  ```
+- **Install dependencies:**
+  ```
+  npm install
+  ```
+
+4. **Backend Installation:**
+
+- **Navigate to the backend directory:**
+  ```
+  cd ../backend
+  ```
+- **Install dependencies:**
+  ```
+  npm install
+  ```
+
+5. **Additional Libraries for Plotting:**
+
+- **Navigate back to the frontend directory:**
+  ```
+  cd ../frontend
+  ```
+- **Install react-plotly:**
+  ```
+  npm install react-plotly
+  ```
+- **Install recharts:**
+  ```
+  npm install recharts
+  ```
+
+By following these steps, you will have installed all the necessary dependencies for both the frontend and backend of the budget management application. Additionally, the required libraries for plotting will be installed in the frontend directory.
 
 ## Usage
 
-1. Start the backend server: `npm start`
-2. Start the frontend development server: `npm run start:client`
+1. Start the backend server: `nodemon server.js` (Note : install nodemon if not)
+2. Start the frontend development server: `npm start`
 3. Access the application in your web browser at `http://localhost:3000`
 
 ## Contributing
