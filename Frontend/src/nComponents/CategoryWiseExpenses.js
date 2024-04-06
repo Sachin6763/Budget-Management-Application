@@ -9,7 +9,6 @@ const CategoryWiseExpenses = ({
   // const [loading, setLoading] = useState(false);
 
   const handleRemoveExpense = async (expenseCategoryName) => {
-    console.log("here");
     try {
       const response = await fetch(
         "http://localhost:4000/api/expenses/removeexpenseitem",
@@ -37,7 +36,7 @@ const CategoryWiseExpenses = ({
       <h3>Categorywise Expenses</h3>
       <ul>
         {expenses.map((category) => (
-          <li key={category.ExpenseID}>
+          <li key={category.CategoryName}>
             {category.CategoryName}: ${category.TotalExpense}
             <button
               onClick={() => handleRemoveExpense(category.CategoryName)}

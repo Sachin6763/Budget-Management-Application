@@ -192,7 +192,7 @@ const AddExpenseForm = ({ Username }) => {
         >
           <option value="">Select Category</option>
           {expenseCategories.map((category) => (
-            <option key={category.CategoryID} value={category}>
+            <option key={category} value={category}>
               {category}
             </option>
           ))}

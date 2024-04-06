@@ -8,7 +8,6 @@ const GoalForm = ({ addGoal, Username }) => {
   const [deadline, setDeadline] = useState("");
 
   const handleSubmit = (e) => {
-    // console.log(Username.Username);
     e.preventDefault();
     addGoal({
       Username: Username,

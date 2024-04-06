@@ -7,7 +7,6 @@ const CategoryWiseIncomes = ({
   handleToaster,
 }) => {
   const handleRemoveIncome = async (incomeCategoryName) => {
-    console.log("here");
     try {
       const response = await fetch(
         "http://localhost:4000/api/incomes/removeincomeitem",
@@ -35,7 +34,7 @@ const CategoryWiseIncomes = ({
       <h3>Categorywise Incomes</h3>
       <ul>
         {incomes.map((category) => (
-          <li key={category.CategoryID}>
+          <li key={category.CategoryName}>
             {category.CategoryName}: ${category.TotalIncome}
             <button
               onClick={() => handleRemoveIncome(category.CategoryName)}

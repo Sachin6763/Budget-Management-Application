@@ -18,9 +18,8 @@ const IncomeTrendAnalysis = ({ nextDayIncome, income }) => {
   const xData = filteredIncome.map((item) =>
     new Date(item.IncomeDate).getDate()
   ); // Day of the month
-  const yData = filteredIncome.map((item) => parseFloat(item.Amount) / 100); // Amount
+  const yData = filteredIncome.map((item) => parseFloat(item.Amount) / 10); // Amount
 
-  console.log("fir" + xData, yData);
   // Set custom layout to restrict width
   const layout = {
     width: 600, // Set desired width
@@ -30,7 +29,7 @@ const IncomeTrendAnalysis = ({ nextDayIncome, income }) => {
       range: [1, 31], // Set range to limit x-axis to 1-31 days
     },
     yaxis: {
-      title: "Income (100Rs)",
+      title: "Income (10Rs)",
       range: [0, 100], // Set range to limit y-axis
     },
   };

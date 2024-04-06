@@ -17,9 +17,7 @@ const ExpenseTrendAnalysis = ({ nextDayExpense, expense }) => {
   const xData = filteredExpense.map((item) =>
     new Date(item.ExpenseDate).getDate()
   ); // Day of the month
-  const yData = filteredExpense.map((item) => parseFloat(item.Amount) / 100); // Amount
-
-  console.log("fir" + xData, yData);
+  const yData = filteredExpense.map((item) => parseFloat(item.Amount) / 10); // Amount
   // Set custom layout to restrict width
   const layout = {
     width: 600, // Set desired width
@@ -29,7 +27,7 @@ const ExpenseTrendAnalysis = ({ nextDayExpense, expense }) => {
       range: [1, 31], // Set range to limit x-axis to 1-31 days
     },
     yaxis: {
-      title: "Expense (100Rs)",
+      title: "Expense (10Rs)",
       range: [0, 100], // Set range to limit y-axis
     },
   };

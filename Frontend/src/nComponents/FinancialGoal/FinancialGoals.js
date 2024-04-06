@@ -16,14 +16,14 @@ const FinancialGoals = ({ Username, months, years }) => {
   const [toasterMessage, setToasterMessage] = useState("");
 
   const handleMonthChange = (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     setSelectedMonth(event.target.value);
     // await fetchCategoryExpenses();
   };
 
   // Function to handle change in year select
   const handleYearChange = (event) => {
-    console.log("year" + event.target.value);
+    // console.log("year" + event.target.value);
     setSelectedYear(event.target.value);
     // await fetchCategoryExpenses();
   };
@@ -38,16 +38,12 @@ const FinancialGoals = ({ Username, months, years }) => {
   useEffect(() => {
     fetchGoals();
   }, []);
-  useEffect(
-    () => {
-      fetchGoals();
-    },
-    [selectedMonth],
-    [selectedYear]
-  );
+  useEffect(() => {
+    fetchGoals();
+  }, [selectedMonth, selectedYear]);
 
   const fetchGoals = async () => {
-    console.log(Username.Username);
+    // console.log(Username.Username);
     try {
       const response = await fetch(
         `http://localhost:4000/api/getPreviousGoals/${Username}/${selectedMonth}/${selectedYear}`
@@ -61,7 +57,7 @@ const FinancialGoals = ({ Username, months, years }) => {
   };
 
   const addGoal = async (newGoal) => {
-    console.log(newGoal);
+    // console.log(newGoal);
     try {
       await fetch("http://localhost:4000/api/addNewGoals", {
         method: "POST",
@@ -100,7 +96,7 @@ const FinancialGoals = ({ Username, months, years }) => {
 
   const handleAddExpense = async (ExpenseName, Amount, ExpenseDate) => {
     try {
-      console.log(ExpenseName, Amount, ExpenseDate);
+      // console.log(ExpenseName, Amount, ExpenseDate);
       const response = await fetch("http://localhost:4000/api/addExpense", {
         method: "POST",
         headers: {

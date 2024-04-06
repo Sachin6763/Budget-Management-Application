@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "../../styles/Prediction.css";
 import ExpenseTrendAnalysis from "./ExpenseTrendAnalysis";
 import IncomeForecasting from "./IncomeForecasting";
-// import SavingGoalProjections from "./SavingGoalProjections";
 import AnomalyDetection from "./AnamolyDetection";
 
 function Prediction({ Username }) {
@@ -81,7 +80,7 @@ function Prediction({ Username }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setIncomes(data);
       })
       .catch((error) => console.error("Error fetching incomes:", error));

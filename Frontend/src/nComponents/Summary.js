@@ -42,14 +42,14 @@ const SummaryComponent = ({ Username, months, years }) => {
   }, [categoryIncomes, categoryExpenses]);
 
   const handleMonthChange = (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     setSelectedMonth(event.target.value);
     // await fetchCategoryExpenses();
   };
 
   // Function to handle change in year select
   const handleYearChange = (event) => {
-    console.log("year" + event.target.value);
+    // console.log("year" + event.target.value);
     setSelectedYear(event.target.value);
     // await fetchCategoryExpenses();
   };
@@ -88,7 +88,7 @@ const SummaryComponent = ({ Username, months, years }) => {
       );
       const data = await response.json();
       setCategoryExpenses(data);
-      console.log(data, "hrere", selectedMonth);
+      // console.log(data, "hrere", selectedMonth);
     } catch (error) {
       console.error("Error fetching category expenses:", error);
     }

@@ -86,7 +86,7 @@ const AddIncomeForm = ({ Username }) => {
     } else if (name === "CategoryID") {
       setSelectedCategory(value);
       const categoryId = await selectedIncomeCategory(value);
-      console.log(categoryId);
+      // console.log(categoryId);
       setFormData({ ...formData, CategoryID: categoryId });
     } else if (name !== "UserID") {
       setFormData({ ...formData, [name]: value });
@@ -225,7 +225,7 @@ const AddIncomeForm = ({ Username }) => {
         >
           <option value="">Select Category</option>
           {incomeCategories.map((category) => (
-            <option key={category.CategoryID} value={category}>
+            <option key={category} value={category}>
               {category}
             </option>
           ))}

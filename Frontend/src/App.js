@@ -32,7 +32,7 @@ export default function App() {
 
   const loggedIn = (userId) => {
     setUser(userId);
-    console.log("user " + userId);
+    // console.log("user " + userId);
     // Store user information in sessionStorage when user logs in
     sessionStorage.setItem("user", JSON.stringify(userId));
   };
