@@ -31,7 +31,7 @@ Managing personal finances can be challenging, especially without proper tools a
 - **Frontend**: React.js
 - **Backend**: Node.js, Express.js
 - **Database**: SQL
-- **Plotting** : Pyplot
+- **Plotting** : react-plotly, recharts
 
 ## Installation
 
