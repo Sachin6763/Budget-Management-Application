@@ -185,8 +185,11 @@ const AddIncomeForm = ({ Username }) => {
           fetchIncomeCategories();
         }, 2000);
       } else {
-        setToasterMessage(`Error: ${data.error}`);
+        setToasterMessage("Income Category is already present");
         setShowToaster(true);
+        setTimeout(() => {
+          setShowToaster(false);
+        }, 2000);
       }
     } catch (error) {
       console.error("Error adding category:", error);

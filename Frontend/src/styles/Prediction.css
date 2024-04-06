@@ -163,6 +163,12 @@
   background-color: #7e2181;
 }
 
+.anomaly-detection-container {
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+  padding: 20px;
+}
+
 .income-anomaly-detection-container {
   padding: 20px;
 }

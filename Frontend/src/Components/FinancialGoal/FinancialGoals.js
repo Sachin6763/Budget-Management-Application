@@ -7,7 +7,7 @@ import "../../Styles/FinancialGoals.css";
 
 const FinancialGoals = ({ Username, months, years }) => {
   const [goals, setGoals] = useState([]);
-  const [goalCategoryID, setGoalCategoryID] = useState(19);
+  const [goalCategoryID, setGoalCategoryID] = useState(38);
   const [showAddGoalForm, setShowAddGoalForm] = useState(false);
   const date = new Date();
   const [selectedMonth, setSelectedMonth] = useState(date.getMonth() + 1);
