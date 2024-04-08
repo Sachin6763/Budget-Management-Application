@@ -3,12 +3,13 @@ const mysql = require("mysql2");
 const path = require("path");
 const cors = require("cors");
 const cron = require("node-cron");
+require("dotenv").config();
 // const { get } = require("https");
 
 const connection = mysql.createConnection({
   host: "localhost",
-  user: "root",
-  password: "Sachin@6763",
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
   database: "BudgetManagementApplicationDatabase",
 });
 
