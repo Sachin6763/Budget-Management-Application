@@ -103,10 +103,29 @@
   padding: 7px;
 }
 
-.scale-select select option {
-  padding: 8px;
-  background-color: rgb(84, 82, 79);
+.time-period-select {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.time-period-select button {
+  background-color: #007bff;
   color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.time-period-select button.selected {
+  background-color: greenyellow;
+}
+
+.time-period-select button:hover:not(.selected) {
+  background-color: #0056b3;
 }
 
 @keyframes bounceScale {
